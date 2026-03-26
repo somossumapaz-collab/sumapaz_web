@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caracterización Productores Rurales - Memoria Sumapaz</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* CSS reset & variables omitted for brevity, reusing from styles.css */
+    </style>
+    <script>
+        const timestamp = new Date().getTime();
+        document.write(`<link rel="stylesheet" href="assets/styles.css?v=${timestamp}">`);
+    </script>
+    <style>
+        @media print {
+            body { background: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            header, nav, .header-content { display: none !important; }
+            .form-submit-container, #btn-descargar-pdf { display: none !important; }
+            main, #main-content { margin: 0 !important; padding: 0 !important; max-width: 100% !important; width: 100% !important; }
+            .section-box { border: 1px solid #eee !important; box-shadow: none !important; padding: 1rem !important; margin-bottom: 1rem !important; page-break-inside: avoid; break-inside: avoid; }
+            .prefilled-card { border: none !important; border-left: 5px solid var(--primary-green) !important; margin-bottom: 1rem !important; }
+            @page { margin: 1.5cm; }
+        }
+    </style>
+    <style>
+        .prefilled-card {
+            background-color: #EFEBE4;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            border-left: 5px solid var(--primary-green);
+        }
+
+        .prefilled-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .info-label {
+            font-size: 0.85rem;
+            color: #666;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .info-value {
+            font-size: 1rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .section-box {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            color: var(--earth-brown);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            border-bottom: 2px solid var(--light-green);
+            padding-bottom: 0.5rem;
+        }
+
+        .checkbox-group,
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .checkbox-item,
+        .radio-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .checkbox-item input,
+        .radio-item input {
+            margin-top: 5px;
+        }
+
+        /* Checkbox lists inside grid */
+        .check-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .dynamic-list-container {
+            border: 1px solid #eee;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+        }
+
+        .dynamic-item {
+            padding-bottom: 1rem;
+            border-bottom: 1px dashed #ccc;
+            margin-bottom: 1rem;
+        }
+
+        .dynamic-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        /* Fix for grid overflow and select widths */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .form-grid>.form-group {
+            min-width: 0;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0.8rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #444;
+        }
+
+        .custom-multi-select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            overflow-y: auto;
+            background: #fff;
+        }
+
+        .custom-multi-select option {
+            padding: 0.6rem;
+            margin-bottom: 2px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .custom-multi-select option:checked {
+            background-color: var(--primary-green, #4CAF50);
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Static Header -->
+    <header id="main-header">
+        <nav class="navbar-custom">
+            <div class="container" style="display: flex; align-items: center;">
+                <a href="index.html"><img src="assets/logo_somossumapaz.png" alt="Somos Sumapaz" class="logo-img"></a>
+                <div class="search-container"
+                    style="margin-left: auto; display: flex; align-items: center; gap: 1.5rem;">
+                    <div id="header-auth-container" style="display: none; align-items: center; gap: 1rem;">
+                        <a href="inscripcion_productores" class="nav-link-btn" id="btn-register"
+                            style="margin: 0; background-color: transparent; color: #FBF4DE; border: none; font-weight: 600;">Registrar
+                            Productor</a>
+                        <a href="productores_registrados" class="nav-link-btn" id="btn-dashboard"
+                            style="margin: 0; background-color: transparent; color: #FBF4DE; border: none; font-weight: 600;">Dashboard</a>
+                        <button onclick="logout()" class="nav-link-btn" id="btn-logout"
+                            style="margin: 0; background-color: transparent; cursor: pointer; color: #FBF4DE; border: none;"
+                            title="Cerrar Sesión">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
+                                style="width: 24px; height: 24px; transform: scaleX(-1);">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container" style="padding-top: 3rem; padding-bottom: 5rem;">
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <h1 class="serif form-title"
+                style="margin-bottom: 0.5rem; color: var(--earth-brown); display: inline-block; position: relative; padding-bottom: 5px;">
+                Ficha de Caracterización
+                <span
+                    style="position: absolute; bottom: 0; left: 25%; width: 50%; height: 3px; background-color: var(--light-green); border-radius: 2px;"></span>
+            </h1>
+            <p class="form-subtitle" style="color: #666; font-size: 1.1rem; margin-top: 0.5rem;">Productores rurales y
+                emprendimientos.</p>
+        </div>
+
+        <!-- Loading spinner -->
+        <div id="loading-spinner" style="text-align: center; padding: 3rem;">Cargando información...</div>
+
+        <div id="main-content" style="display: none;">
+            <!-- Pre-filled basic data -->
+            <div class="prefilled-card">
+                <h3 style="color: var(--primary-green); margin-bottom: 0.5rem;">Información Básica del Productor
+                </h3>
+                <p style="font-size: 0.9rem; color: #666;">Estos datos fueron recopilados durante la inscripción y no
+                    requieren llenarse de nuevo.</p>
+                <div class="prefilled-grid">
+                    <div>
+                        <div class="info-label">Nombre Completo</div>
+                        <div class="info-value" id="lbl-nombre">-</div>
+                    </div>
+                    <div>
+                        <div class="info-label">Documento</div>
+                        <div class="info-value"><span id="lbl-tipo-doc"></span> <span id="lbl-num-doc">-</span></div>
+                    </div>
+                    <div>
+                        <div class="info-label">Teléfono</div>
+                        <div class="info-value" id="lbl-telefono">-</div>
+                    </div>
+                    <div>
+                        <div class="info-label">Correo Electrónico</div>
+                        <div class="info-value" id="lbl-correo">-</div>
+                    </div>
+                    <div>
+                        <div class="info-label">Vereda / Corregimiento</div>
+                        <div class="info-value" id="lbl-vereda">-</div>
+                    </div>
+                    <div>
+                        <div class="info-label">Nombre del Predio</div>
+                        <div class="info-value" id="lbl-predio">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Form directly below -->
+            <form id="caracterizacion-form" class="custom-form">
+                <input type="hidden" id="productor_id" name="productor_id">
+
+                <!-- FECHA -->
+                <div class="section-box"
+                    style="display: flex; justify-content: space-between; align-items: center; background: #fafafa;">
+                    <div>
+                        <h2 style="font-size: 1.1rem; color: #555; margin: 0;">Registro de Caracterización</h2>
+                        <p style="font-size: 0.85rem; color: #888; margin: 0; padding-top: 4px;">La hora de registro se
+                            guarda automáticamente.</p>
+                    </div>
+                    <div
+                        style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 0.8rem 1.2rem; text-align: center; min-width: 200px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                        <div
+                            style="font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">
+                            Fecha y Hora Actual</div>
+                        <div id="display_fecha"
+                            style="font-weight: 600; color: var(--primary-green); font-size: 1.1rem;">-</div>
+                        <input type="hidden" id="fecha_caracterizacion" name="fecha_caracterizacion">
+                    </div>
+                </div>
+
+                <script>
+                    // Display and set current datetime for fecha_caracterizacion
+                    (function () {
+                        const now = new Date();
+                        // Format for backend (YYYY-MM-DD HH:MM:SS)
+                        const pad = num => num.toString().padStart(2, '0');
+                        const dbFormat = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+                        document.getElementById('fecha_caracterizacion').value = dbFormat;
+
+                        // Format nicely for UI
+                        const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                        document.getElementById('display_fecha').textContent = now.toLocaleDateString('es-CO', options);
+                    })();
+                </script>
+
+                <!-- I. GENERAL -->
+                <div class="section-box">
+                    <h2 class="section-title">I. Información General (Complementaria)</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Nombre de la unidad productiva / organización</label>
+                            <input type="text" name="nombre_organizacion" placeholder="Ej. Asociación ABC">
+                        </div>
+                        <div class="form-group">
+                            <label>Coordenadas (Opcional)</label>
+                            <input type="text" name="coordenadas" placeholder="Latitud, Longitud">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- II. SOCIODEMOGRÁFICA -->
+                <div class="section-box">
+                    <h2 class="section-title">II. Información Sociodemográfica</h2>
+                    <div class="form-grid check-grid">
+                        <div class="form-group">
+                            <label>¿Hace parte de estos grupos poblacionales?</label>
+                            <select name="grupos_poblacionales[]" multiple size="8" class="custom-multi-select">
+                                <option value="1">Mujer cabeza de hogar</option>
+                                <option value="2">LGBTIQ+</option>
+                                <option value="3">Víctima del conflicto armado</option>
+                                <option value="4">Afrodescendiente</option>
+                                <option value="5">Indígena</option>
+                                <option value="6">Mujer &lt; 25 o &gt; 60</option>
+                                <option value="7">Joven rural</option>
+                                <option value="8">Ninguna</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>¿Presenta algún tipo de discapacidad?</label>
+                            <select name="discapacidad" onchange="toggleDiscapacidadTipo()">
+                                <option value="No">No</option>
+                                <option value="Sí">Sí</option>
+                            </select>
+
+                            <div id="discapacidad_tipo_container" style="display: none; margin-top: 1rem;">
+                                <label>Si respondió sí, ¿qué tipo?</label>
+                                <input type="text" name="discapacidad_tipo" placeholder="Especificar tipo">
+                            </div>
+
+                            <script>
+                                function toggleDiscapacidadTipo() {
+                                    const select = document.querySelector('select[name="discapacidad"]');
+                                    const container = document.getElementById('discapacidad_tipo_container');
+                                    const input = document.querySelector('input[name="discapacidad_tipo"]');
+                                    if (select.value === 'Sí') {
+                                        container.style.display = 'block';
+                                    } else {
+                                        container.style.display = 'none';
+                                        input.value = '';
+                                    }
+                                }
+                            </script>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- III. ORGANIZACIONAL -->
+                <div class="section-box">
+                    <h2 class="section-title">III. Información Organizacional</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Tipo de organización</label>
+                            <select name="tipo_organizacion">
+                                <option value="">Seleccione...</option>
+                                <option value="Productor individual">Productor individual</option>
+                                <option value="Gremio / Federación">Gremio / Federación</option>
+                                <option value="Asociación campesina">Asociación campesina</option>
+                                <option value="Sociedad por acciones simplificada">Sociedad por acciones simplificada
+                                </option>
+                                <option value="Fundación">Fundación</option>
+                                <option value="Organización">Organización</option>
+                                <option value="Ninguna">Ninguna</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Extensión del predio (Hectáreas)</label>
+                            <input type="number" step="0.01" name="extension_predio" placeholder="Ej. 2.5">
+                        </div>
+                        <div class="form-group">
+                            <label>Tiempo de implementación (meses)</label>
+                            <input type="number" name="tiempo_implementacion" min="0" placeholder="Ej. 24">
+                        </div>
+                        <div class="form-group">
+                            <label>Tipo de tenencia del predio</label>
+                            <select name="tipo_tenencia">
+                                <option value="">Seleccione...</option>
+                                <option value="Arrendamiento">Arrendamiento</option>
+                                <option value="Posesión">Posesión</option>
+                                <option value="Propio">Propio</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>¿Cuántas personas están vinculadas a su organización?</label>
+                            <input type="number" name="numero_personas" min="0" placeholder="Ej. 5">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- IV. CATEGORÍAS PRODUCTIVAS -->
+                <div class="section-box">
+                    <h2 class="section-title">IV. Categorías Productivas</h2>
+                    <p style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.95rem;">Marque las
+                        subcategorías que correspondan a su producción.</p>
+
+                    <div class="form-grid check-grid" style="gap:2rem;">
+                        <div class="form-group">
+                            <label style="color: var(--primary-green);">Producción pecuaria y derivados lácteos</label>
+                            <select name="categorias[]" multiple size="10" class="custom-multi-select">
+                                <option value="1">Leche fresca</option>
+                                <option value="2">Quesos / yogurt / arequipe</option>
+                                <option value="3">Producción de Carne de res</option>
+                                <option value="4">Producción de Carne de cerdo</option>
+                                <option value="5">Producción de Carne de pollo</option>
+                                <option value="6">Producción de Trucha</option>
+                                <option value="7">Producción de otras especies (cuy, conejo)</option>
+                                <option value="8">Producción de huevos</option>
+                                <option value="9">Producción de Chorizos / embutidos</option>
+                                <option value="10">Miel, polen y otros productos apícolas</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label style="color: var(--primary-green);">Producción agrícola (Hortalizas, tubérculos y
+                                cereales)</label>
+                            <select name="categorias[]" multiple size="3" class="custom-multi-select">
+                                <option value="11">Hortalizas, zanahoria, lechuga, espinaca, acelga, brocoli, coliflor,
+                                    remolacha, cebolla, ajo, repollo, rabano</option>
+                                <option value="12">Tubérculos y raíces : papa (nativa, pastusa, sabanera, etc),
+                                    arracacha, yuca, cubios</option>
+                                <option value="13">Leguminosas y cereales : arveja, frijol, habas, lentejas, garbanzo,
+                                    maiz, cebada, trigo, avena, centeno</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label style="color: var(--primary-green);">Producción frutícola y derivados en procesos
+                                artesanales y agroindustriales</label>
+                            <select name="categorias[]" multiple size="2" class="custom-multi-select">
+                                <option value="14">Frutas : mora, fresa, uchuva, durazno, manzana, pera, lulo, curuba,
+                                    tomate de arbol</option>
+                                <option value="15">Subproductos : mermeladas, pulpas, jugos, nectares, deshidratados
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label style="color: var(--primary-green);">Plantas aromáticas / medicinales y productos
+                                naturales</label>
+                            <select name="categorias[]" multiple size="2" class="custom-multi-select">
+                                <option value="16">Plantas : manzanilla, menta, hierbabuena, orégano, ruda, toronjil,
+                                    caléndula, albahaca, entre otras</option>
+                                <option value="17">Productos : Infusiones, aceites, jabones, cremas, unguentos,
+                                    aromaticas</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label style="color: var(--primary-green);">Transformación de alimentos artesanal y
+                                agroindustrial</label>
+                            <select name="categorias[]" multiple size="3" class="custom-multi-select">
+                                <option value="18">Panadería y resposteria : panes, tortas, bizcochos y galletas
+                                </option>
+                                <option value="19">Harinas y derivados : arepa, avena procesada, mezclas artesanales
+                                </option>
+                                <option value="20">Conservas / salsas, encurtidos u otros productos, empacados</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label style="color: var(--primary-green);">Artesanías y Manufacturas Rurales</label>
+                            <select name="categorias[]" multiple size="3" class="custom-multi-select">
+                                <option value="21">Tejidos, alpargatas, cesteria, carpinteria</option>
+                                <option value="22">Producción de articulos utilitarios o decorativos</option>
+                                <option value="23">Forja y ornamentación en hierro o metal</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label style="color: var(--primary-green);">Expresiones artísticas o servicios
+                                culturales</label>
+                            <select name="categorias[]" multiple size="2" class="custom-multi-select">
+                                <option value="24">Actividades culturales</option>
+                                <option value="25">Actividades deportivas</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label style="color: var(--primary-green);">Servicios rurales, gastronomicos y de economía
+                                local</label>
+                            <select name="categorias[]" multiple size="4" class="custom-multi-select">
+                                <option value="26">Restaurantes, panaderías y tiendas vederales</option>
+                                <option value="27">Preparación de alimentos, refrigerios, avituallamiento y servicios de
+                                    catering</option>
+                                <option value="28">Turismo rural, paseos ecológicos, guianza, hospedaje</option>
+                                <option value="29">Alquiler de maquinaria, transporte rural, servicios de apoyo a la
+                                    produccción</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- V. INFORMACIÓN DE PRODUCCIÓN (DYNAMIC) -->
+                <div class="section-box">
+                    <h2 class="section-title">V. Información de Producción</h2>
+
+                    <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color:#444;">5.1 Productos Ofertados</h3>
+                    <div id="productos-container" class="dynamic-list-container">
+                        <div class="dynamic-item">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Nombre del producto</label>
+                                    <input type="text" name="nombre[]" placeholder="Ej. Queso Campesino">
+                                </div>
+                                <div class="form-group">
+                                    <label>Volumen</label>
+                                    <input type="number" step="0.01" name="volumen[]" placeholder="Ej. 50">
+                                </div>
+                                <div class="form-group">
+                                    <label>Unidad de volumen</label>
+                                    <select name="unidad_volumen[]">
+                                        <option value="">Seleccione...</option>
+                                        <option value="kg">kg</option>
+                                        <option value="Unidad">Unidad</option>
+                                        <option value="Litro">Litro</option>
+                                        <option value="Animal">Animal</option>
+                                        <option value="Cubeta">Cubeta</option>
+                                        <option value="Botella">Botella</option>
+                                        <option value="Bulto">Bulto</option>
+                                        <option value="Carga">Carga</option>
+                                        <option value="Servicio">Servicio</option>
+                                        <option value="Tonelada">Tonelada</option>
+                                        <option value="Arroba">Arroba</option>
+                                        <option value="Canastilla">Canastilla</option>
+                                        <option value="Saco">Saco</option>
+                                        <option value="Mililitro">Mililitro</option>
+                                        <option value="Galón">Galón</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Frecuencia</label>
+                                    <select name="frecuencia[]">
+                                        <option value="">Seleccione...</option>
+                                        <option value="Diarios">Diarios</option>
+                                        <option value="Semanal">Semanal</option>
+                                        <option value="Quincenal">Quincenal</option>
+                                        <option value="Mensual">Mensual</option>
+                                        <option value="Bimensual">Bimensual</option>
+                                        <option value="Trimestral">Trimestral</option>
+                                        <option value="Semestral">Semestral</option>
+                                        <option value="Anual">Anual</option>
+                                        <option value="Demanda">Demanda</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Presentación</label>
+                                    <select name="presentacion[]">
+                                        <option value="">Seleccione...</option>
+                                        <option value="Granel">Granel</option>
+                                        <option value="Empacado">Empacado</option>
+                                        <option value="Botella">Botella</option>
+                                        <option value="Cubeta">Cubeta</option>
+                                        <option value="Bulto">Bulto</option>
+                                        <option value="Cantina">Cantina</option>
+                                        <option value="Animal vivo">Animal vivo</option>
+                                        <option value="Marca propia">Marca propia</option>
+                                        <option value="No aplica">No aplica</option>
+                                        <option value="Caja">Caja</option>
+                                        <option value="Bolsa">Bolsa</option>
+                                        <option value="Canastilla">Canastilla</option>
+                                        <option value="Tambor">Tambor</option>
+                                        <option value="Big Bag">Big Bag</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Calidad</label>
+                                    <input type="text" name="calidad[]" placeholder="Ej. De primera">
+                                </div>
+                                <div class="form-group">
+                                    <label>Precio por unidad ($)</label>
+                                    <input type="number" name="precio[]" placeholder="Ej. 12000">
+                                </div>
+                                <div class="form-group">
+                                    <label>Unidad del precio</label>
+                                    <select name="unidad_precio[]">
+                                        <option value="">Seleccione...</option>
+                                        <option value="kg">kg</option>
+                                        <option value="Unidad">Unidad</option>
+                                        <option value="Litro">Litro</option>
+                                        <option value="Animal">Animal</option>
+                                        <option value="Cubeta">Cubeta</option>
+                                        <option value="Botella">Botella</option>
+                                        <option value="Bulto">Bulto</option>
+                                        <option value="Carga">Carga</option>
+                                        <option value="Servicio">Servicio</option>
+                                        <option value="Tonelada">Tonelada</option>
+                                        <option value="Arroba">Arroba</option>
+                                        <option value="Canastilla">Canastilla</option>
+                                        <option value="Saco">Saco</option>
+                                        <option value="Mililitro">Mililitro</option>
+                                        <option value="Galón">Galón</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn" style="background-color: #2D5A27; color: white; margin-top: 1rem; border-radius: 8px;" onclick="addProducto()">➕ Agregar otro producto</button>
+
+                    <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color:#444;">Servicios Culturales / Deportivos
+                        (Solo si aplica)</h3>
+                    <div id="servicios-container" class="dynamic-list-container">
+                        <div class="dynamic-item">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Actividad 1 - Nombre de la actividad</label>
+                                    <input type="text" name="act_nombre[]" placeholder="Ej. Taller de danza">
+                                </div>
+                                <div class="form-group">
+                                    <label>Actividad 1 - Frecuencia</label>
+                                    <select name="act_frecuencia[]">
+                                        <option value="">Seleccione...</option>
+                                        <option value="Diarios">Diarios</option>
+                                        <option value="Semanal">Semanal</option>
+                                        <option value="Quincenal">Quincenal</option>
+                                        <option value="Mensual">Mensual</option>
+                                        <option value="Bimensual">Bimensual</option>
+                                        <option value="Trimestral">Trimestral</option>
+                                        <option value="Semestral">Semestral</option>
+                                        <option value="Anual">Anual</option>
+                                        <option value="Demanda">Demanda</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Actividad 1 - Población objetivo</label>
+                                    <input type="text" name="act_poblacion_objetivo[]" placeholder="Ej. Jóvenes">
+                                </div>
+                                <div class="form-group">
+                                    <label>Actividad 1 - Tipo de contrato / vinculación</label>
+                                    <input type="text" name="act_tipo_contrato[]"
+                                        placeholder="Ej. Prestación de servicios">
+                                </div>
+                                <div class="form-group">
+                                    <label>Actividad 1 - ¿Dónde se realizan principalmente?</label>
+                                    <input type="text" name="act_lugar[]" placeholder="Ej. Salón Comunal">
+                                </div>
+                                <div class="form-group">
+                                    <label>Actividad 1 - Recursos utilizados</label>
+                                    <input type="text" name="act_recursos[]" placeholder="Ej. Implementos deportivos">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn" style="background-color: #2D5A27; color: white; margin-top: 1rem; border-radius: 8px;" onclick="addServicio()">➕ Agregar otra actividad</button>
+
+                    <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color:#444;">5.3 Canales de Venta / Entrega</h3>
+                    <div class="form-grid">
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label>¿CÓMO VENDE O ENTREGA SUS PRODUCTOS/ SERVICIOS?</label>
+                            <select name="canales[]" multiple size="8" class="custom-multi-select">
+                                <option value="1">Los vendo en mi vereda o zona rural</option>
+                                <option value="2">Lo recogen directamente en la finca</option>
+                                <option value="3">Los llevo a mercados o ferias campesinas</option>
+                                <option value="4">Por pedido directo o conocidos o clientes</option>
+                                <option value="5">A través de intermediarios o revendedores</option>
+                                <option value="6">Participación en mesas del sector</option>
+                                <option value="7">A entidades públicas (PAE, escuelas, hospitales)</option>
+                                <option value="8">Difusión por redes sociales</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- VI. CARACTERIZACIÓN SISTEMA PRODUCTIVO -->
+                <div class="section-box">
+                    <h2 class="section-title">VI. Caracterización del Sistema Productivo</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Tipo de mano de obra</label>
+                            <select name="mano_obra">
+                                <option value="">Seleccione...</option>
+                                <option value="FAMILIAR">FAMILIAR</option>
+                                <option value="EXTERNA">EXTERNA</option>
+                                <option value="MIXTA (FAMILIA Y APOYO EXTERNO)">MIXTA (FAMILIA Y APOYO EXTERNO)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Proceso productivo mayoritario</label>
+                            <select name="tipo_proceso">
+                                <option value="">Seleccione...</option>
+                                <option value="MANUAL (HERRAMIENTAS BÁSICAS O MANUAL)">MANUAL (HERRAMIENTAS BÁSICAS O
+                                    MANUAL)</option>
+                                <option value="CON MAQUINARIA O EQUIPOS ESPECIALIZADOS">CON MAQUINARIA O EQUIPOS
+                                    ESPECIALIZADOS</option>
+                                <option value="NO APLICA">NO APLICA</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>¿Utiliza abonos orgánicos o prácticas agroecológicas?</label>
+                            <select name="usa_abonos">
+                                <option value="1">SÍ</option>
+                                <option selected value="0">NO</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>¿Tiene sistemas productivos asociados o complementarios?</label>
+                            <select name="sistemas_asociados">
+                                <option value="1">SÍ</option>
+                                <option selected value="0">NO</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>¿Maneja algún tipo de sistema de producción diferenciado?</label>
+                            <select name="sistema_diferenciado" onchange="toggleDescripcionSistema(this.value)">
+                                <option value="0" selected>NO</option>
+                                <option value="1">SÍ</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="group-descripcion-sistema" style="display: none;">
+                            <label>¿Cuál?</label>
+                            <input type="text" name="descripcion" placeholder="Especifique el sistema diferenciado">
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label>Si su actividad es cultural/deportiva ¿cuál es su valor agregado?</label>
+                            <textarea name="valor_agregado" rows="3"
+                                style="width:100%; padding:0.8rem; border:1px solid #ccc; border-radius:8px;"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VII & VIII Merged for brevity -->
+                <div class="section-box">
+                    <h2 class="section-title">VII. Comercialización y Dificultades</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Destino principal de la producción</label>
+                            <select name="destino">
+                                <option value="">Seleccione...</option>
+                                <option value="Para el autoconsumo">Para el autoconsumo</option>
+                                <option value="Para autoconsumo y venta de excedentes">Para autoconsumo y venta de
+                                    excedentes</option>
+                                <option value="Para venta total o comercialización completa">Para venta total o
+                                    comercialización completa</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Transporte utilizado</label>
+                            <select name="transporte">
+                                <option value="">Seleccione...</option>
+                                <option value="PROPIO">PROPIO</option>
+                                <option value="ALQUILADO">ALQUILADO</option>
+                                <option value="DEPENDO DE TRANSPORTE COMUNAL, FAMILIAR O DE AMIGOS (SIN PAGO)">DEPENDO
+                                    DE TRANSPORTE COMUNAL, FAMILIAR O DE AMIGOS (SIN PAGO)</option>
+                                <option value="NO TENGO TRANSPORTE">NO TENGO TRANSPORTE</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Forma de pago</label>
+                            <select name="forma_pago">
+                                <option value="">Seleccione...</option>
+                                <option value="ANTES DE ENTREGARLOS / ANTES DE PRESENTARSE">ANTES DE ENTREGARLOS / ANTES
+                                    DE PRESENTARSE</option>
+                                <option value="EN EL MOMENTO DE LA ENTREGA / PRESENTACIÓN">EN EL MOMENTO DE LA ENTREGA /
+                                    PRESENTACIÓN</option>
+                                <option value="DESPUÉS DE LA ENTREGA / PRESENTACIÓN (A CRÉDITO O PLAZO)">DESPUÉS DE LA
+                                    ENTREGA / PRESENTACIÓN (A CRÉDITO O PLAZO)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Fijación del precio</label>
+                            <select name="define_precio">
+                                <option value="">Seleccione...</option>
+                                <option value="EL COMPRADOR">EL COMPRADOR</option>
+                                <option value="YO LO ESTABLEZCO DIRECTAMENTE">YO LO ESTABLEZCO DIRECTAMENTE</option>
+                                <option value="SE ACUERDA MEDIANTE NEGOCIACIÓN">SE ACUERDA MEDIANTE NEGOCIACIÓN</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label>¿CUÁLES SON LAS PRINCIPALES DIFICULTADES O LIMITACIONES QUE ENFRENTA EN SU PROCESO
+                                PRODUCTIVO O CULTURAL/DEPORTIVO? (MARQUE TODAS LAS QUE APLIQUEN)</label>
+                            <select name="dificultades[]" multiple size="8" class="custom-multi-select">
+                                <option value="1">ALTOS COSTOS DE MATERIAS PRIMAS O INSUMOS</option>
+                                <option value="2">DESCONOCIMIENTO O LIMITACIONES EN LOS PROCESOS DE PRODUCCIÓN</option>
+                                <option value="3">FALTA DE FINANCIACIÓN O ACCESO AL CRÉDITO</option>
+                                <option value="4">ESCASO APOYO INSTITUCIONAL O ASISTENCIA TÉCNICA</option>
+                                <option value="5">INFRAESTRUCTURA INADECUADA</option>
+                                <option value="6">PROBLEMAS CLIMÁTICOS O DE PLAGAS</option>
+                                <option value="7">DIFICULTADES DE TRANSPORTE O ACCESO AL PREDIO / LUGARES DE
+                                    FORMACIÓN/PRESENTACIÓN</option>
+                                <option value="8">SOLICITUD DE PERMISOS PARA ESPACIOS PÚBLICOS (SUGA)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label>¿CUENTA CON ALGUNO DE LOS SIGUIENTES REGISTROS, PERMISOS O CERTIFICACIONES? (MARQUE
+                                TODAS LAS QUE APLIQUEN)</label>
+                            <select name="certificaciones[]" multiple size="9" class="custom-multi-select">
+                                <option value="1">REGISTRO INVIMA</option>
+                                <option value="2">REGISTRO ICA - PREDIO AGRÍCOLA</option>
+                                <option value="3">REGISTRO ICA - PREDIO PECUARIO</option>
+                                <option value="4">BUENAS PRÁCTICAS AGRÍCOLAS (BPA)</option>
+                                <option value="5">BUENAS PRÁCTICAS BPP O BPM</option>
+                                <option value="6">CERTIFICADO EN MANIPULACIÓN DE ALIMENTOS</option>
+                                <option value="7">RECONOCIMIENTO O CERTIFICADO IDRD</option>
+                                <option value="8">REGISTRO MIN CULTURA</option>
+                                <option value="9">NINGUNO</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" style="grid-column: 1 / -1; max-width: 600px;">
+                            <label>¿SE ENCUENTRA EN PROCESO DE TRÁMITE O GESTIÓN DE ALGUNO DE LOS ANTERIORES PERMISOS O
+                                CERTIFICACIONES?</label>
+                            <select name="en_tramite_bool" onchange="toggleEnTramite()">
+                                <option value="No">No</option>
+                                <option value="Sí">Sí</option>
+                            </select>
+
+                            <div id="en_tramite_container" style="display: none; margin-top: 1rem;">
+                                <label>Si respondió sí, ¿cuál o cuáles?</label>
+                                <input type="text" name="en_tramite" placeholder="Especifique cuál trámite">
+                            </div>
+
+                            <script>
+                                function toggleEnTramite() {
+                                    const select = document.querySelector('select[name="en_tramite_bool"]');
+                                    const container = document.getElementById('en_tramite_container');
+                                    const input = document.querySelector('input[name="en_tramite"]');
+                                    if (select.value === 'Sí') {
+                                        container.style.display = 'block';
+                                    } else {
+                                        container.style.display = 'none';
+                                        input.value = '';
+                                    }
+                                }
+                            </script>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- VIII. FINANCIAMIENTO -->
+                <div class="section-box">
+                    <h2 class="section-title">VIII. Financiamiento</h2>
+                    <div class="form-grid">
+                        <div class="form-group" style="grid-column: 1 / -1; max-width: 500px;">
+                            <label>¿HA TENIDO ACCESO A PROCESOS DE FINANCIAMIENTO?</label>
+                            <select name="financiamiento">
+                                <option value="">Seleccione...</option>
+                                <option value="1">CRÉDITOS AGROPECUARIOS</option>
+                                <option value="2">COOPERATIVAS</option>
+                                <option value="3">LÍNEAS ESPECIALES DE CRÉDITO</option>
+                                <option value="4">PROGRAMAS DE APOYO CAMPESINO</option>
+                                <option value="5">CRÉDITOS BANCARIOS</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-submit-container" style="text-align: center; margin-top: 3rem;">
+                    <button type="button" class="btn btn-submit"
+                        style="background-color: #6c757d; width: 30%; max-width: 250px; margin-right: 1rem;"
+                        onclick="window.location.href='productores_registrados.html'">Volver</button>
+
+                    <button type="button" class="btn btn-submit"
+                        style="background-color: var(--primary-green); width: 30%; max-width: 250px; margin-right: 1rem;"
+                        onclick="descargarFichaGlobalPDF()" id="btn-descargar-pdf">⏬ Descargar PDF</button>
+
+                    <button type="submit" class="btn btn-submit"
+                        style="background-color: #f39c12; width: 30%; max-width: 250px;" id="btn-save-provisional">💾 Guardar Cambios (Provisional)</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 class="serif modal-title" style="color:var(--primary-green)">¡Guardado!</h2>
+            <p class="modal-text">La caracterización ha sido guardada exitosamente.</p>
+            <button class="btn btn-submit" style="width: 100%; margin-top: 1.5rem;"
+                onclick="window.location.href='productores_registrados.html'">Volver al Dashboard</button>
+        </div>
+    </div>
+
+    <!-- App Logic -->
+    <script>
+        let docExportReady = "Productor";
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Auth check
+            try {
+                const authRes = await fetch('api/check_auth.php');
+                const authResult = await authRes.json();
+                if (!authRes.ok || !authResult.authenticated) {
+                    window.location.href = 'login.html';
+                    return;
+                } else {
+                    document.getElementById('header-auth-container').style.display = 'flex';
+                }
+            } catch (error) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const prodId = urlParams.get('id');
+
+            if (!prodId) {
+                alert('ID del productor es requerido.');
+                window.location.href = 'productores_registrados.html';
+                return;
+            }
+
+            document.getElementById('productor_id').value = prodId;
+
+            try {
+                const response = await fetch(`api/get_productor.php?id=${prodId}`);
+                const resData = await response.json();
+
+                if (response.ok && resData.success) {
+                    const data = resData.data;
+                    document.getElementById('lbl-nombre').textContent = data.nombre_completo || '-';
+                    document.getElementById('lbl-tipo-doc').textContent = data.tipo_documento || '';
+                    document.getElementById('lbl-num-doc').textContent = data.numero_documento || '-';
+                    document.getElementById('lbl-telefono').textContent = data.telefono || '-';
+                    document.getElementById('lbl-correo').textContent = data.correo_electronico || '-';
+                    document.getElementById('lbl-vereda').textContent = data.vereda || '-';
+                    document.getElementById('lbl-predio').textContent = data.nombre_predio || '-';
+
+                    docExportReady = data.numero_documento || prodId;
+
+                    // Fetch Extended Ficha based on Document and Relational Detalle based on ID
+                    await Promise.all([
+                        loadExtendedFichaData(data.numero_documento),
+                        loadDetalleData(prodId)
+                    ]);
+
+                    // Build visual multiselects AFTER the data has checked the native options
+                    initCustomMultiSelects();
+
+                } else {
+                    alert('Productor no encontrado.');
+                    window.location.href = 'productores_registrados.html';
+                    return;
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                alert('Error al cargar la información.');
+            } finally {
+                document.getElementById('loading-spinner').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+            }
+        });
+
+        async function loadExtendedFichaData(doc) {
+            try {
+                const res = await fetch(`api/get_ficha_by_documento.php?doc=${encodeURIComponent(doc)}`);
+                const result = await res.json();
+                if (result.success && result.data && result.data.tiene_caracterizacion == 1) {
+                    const f = result.data;
+                    lockAndFillField('nombre_organizacion', f.nombre_organizacion);
+                    lockAndFillField('coordenadas', f.coordenadas);
+                    lockAndFillField('discapacidad', f.discapacidad);
+                    lockAndFillField('discapacidad_tipo', f.discapacidad_tipo);
+                    lockAndFillField('tipo_organizacion', f.tipo_organizacion);
+                    lockAndFillField('extension_predio', f.extension_predio);
+                    lockAndFillField('tiempo_implementacion', f.tiempo_implementacion);
+                    lockAndFillField('tipo_tenencia', f.tipo_tenencia);
+                    lockAndFillField('numero_personas', f.numero_personas);
+                    lockAndFillField('mano_obra', f.mano_obra);
+                    lockAndFillField('tipo_proceso', f.tipo_proceso);
+                    lockAndFillField('usa_abonos', f.usa_abonos);
+                    lockAndFillField('sistemas_asociados', f.sistemas_asociados);
+                    lockAndFillField('sistema_diferenciado', f.sistema_diferenciado);
+                    lockAndFillField('descripcion', f.descripcion);
+                    lockAndFillField('valor_agregado', f.valor_agregado);
+                    lockAndFillField('destino', f.destino);
+                    lockAndFillField('transporte', f.transporte);
+                    lockAndFillField('forma_pago', f.forma_pago);
+                    lockAndFillField('define_precio', f.define_precio);
+                    lockAndFillField('en_tramite_bool', f.en_tramite_bool);
+                    lockAndFillField('en_tramite', f.en_tramite);
+                    lockAndFillField('financiamiento', f.financiamiento);
+
+                    // Re-trigger visual updates based on fields
+                    if (f.discapacidad == 'Sí') toggleDiscapacidadTipo();
+                    if (f.sistema_diferenciado == '1') toggleDescripcionSistema('1');
+                    if (f.en_tramite_bool == 'Sí') toggleEnTramite();
+
+                }
+            } catch (e) {
+                console.error("Ficha fetching error", e);
+            }
+        }
+
+        async function loadDetalleData(id) {
+            try {
+                const res = await fetch(`api/get_detalle_productor.php?id=${id}`);
+                const result = await res.json();
+                if (result.success && result.data) {
+                    const d = result.data;
+
+                    if (d.discapacidad && d.discapacidad.tiene_discapacidad) {
+                        lockAndFillField('discapacidad', d.discapacidad.tiene_discapacidad);
+                        if (d.discapacidad.tiene_discapacidad === 'Sí') {
+                            toggleDiscapacidadTipo();
+                            lockAndFillField('discapacidad_tipo', d.discapacidad.tipo);
+                        }
+                    }
+
+                    lockMultiSelectByText('grupos_poblacionales[]', d.grupos);
+                    lockMultiSelectByText('categorias[]', d.categorias);
+                    lockMultiSelectByText('certificaciones[]', d.certificaciones);
+                    lockMultiSelectByText('canales[]', d.canales);
+                    lockMultiSelectByText('dificultades[]', d.dificultades);
+                    lockMultiSelectByText('financiamiento', d.financiamiento);
+
+                    // Populate Products
+                    if (d.productos && Array.isArray(d.productos) && d.productos.length > 0) {
+                        const tbody = document.getElementById('productos-container');
+                        if (tbody) tbody.innerHTML = ''; // Clear default
+                        d.productos.forEach(p => {
+                            if (typeof addProducto === 'function') addProducto();
+                            const newRow = tbody.lastElementChild;
+                            if (!newRow) return;
+                            const inputs = newRow.querySelectorAll('input, select');
+                            if (inputs.length >= 8) {
+                                inputs[0].value = p.nombre || '';
+                                inputs[1].value = p.volumen || '';
+                                inputs[2].value = p.unidad_volumen || '';
+                                inputs[3].value = p.frecuencia || '';
+                                inputs[4].value = p.presentacion || '';
+                                inputs[5].value = p.calidad || '';
+                                inputs[6].value = p.precio || '';
+                                inputs[7].value = p.unidad_precio || '';
+
+                                inputs.forEach(inp => {
+                                    inp.readOnly = true;
+                                    inp.style.backgroundColor = '#f4f4f4';
+                                    if (inp.tagName.toLowerCase() === 'select') inp.disabled = true;
+                                });
+                            }
+                            const delBtn = newRow.querySelector('button');
+                            if (delBtn) {
+                                delBtn.disabled = true;
+                                delBtn.style.opacity = '0.5';
+                                delBtn.style.pointerEvents = 'none';
+                            }
+                        });
+                    }
+
+                    // Populate Services
+                    if (d.servicios && Array.isArray(d.servicios) && d.servicios.length > 0) {
+                        const tbody = document.getElementById('servicios-container');
+                        if (tbody) tbody.innerHTML = '';
+                        d.servicios.forEach(s => {
+                            if (typeof addServicio === 'function') addServicio();
+                            const newRow = tbody.lastElementChild;
+                            if (!newRow) return;
+                            const inputs = newRow.querySelectorAll('input, select');
+                            if (inputs.length >= 6) {
+                                inputs[0].value = s.nombre_actividad || '';
+                                inputs[1].value = s.frecuencia || '';
+                                inputs[2].value = s.poblacion_objetivo || '';
+                                inputs[3].value = s.tipo_contrato || '';
+                                inputs[4].value = s.lugar || '';
+                                inputs[5].value = s.recursos || '';
+
+                                inputs.forEach(inp => {
+                                    inp.readOnly = true;
+                                    inp.style.backgroundColor = '#f4f4f4';
+                                    if (inp.tagName.toLowerCase() === 'select') inp.disabled = true;
+                                });
+                            }
+                            const delBtn = newRow.querySelector('button');
+                            if (delBtn) {
+                                delBtn.disabled = true;
+                                delBtn.style.opacity = '0.5';
+                                delBtn.style.pointerEvents = 'none';
+                            }
+                        });
+                    }
+                }
+            } catch (e) {
+                console.error("Detalle fetching error", e);
+            }
+        }
+
+        function lockMultiSelectByText(name, commasepTexts) {
+            if (!commasepTexts || commasepTexts === 'Ninguno' || commasepTexts === 'Ninguna') return;
+            let selects = document.querySelectorAll(`select[name="${name}"]`);
+            if (selects.length === 0) return;
+
+            const texts = commasepTexts.split('|').map(t => t.trim().toLowerCase());
+
+            selects.forEach(select => {
+                Array.from(select.options).forEach(opt => {
+                    if (texts.includes(opt.text.trim().toLowerCase())) {
+                        opt.selected = true;
+                    }
+                });
+
+                select.setAttribute('disabled', 'true');
+                select.style.backgroundColor = '#f4f4f4';
+            });
+        }
+
+        function lockAndFillField(name, value) {
+            if (value !== null && value !== undefined && value !== "") {
+                const el = document.querySelector(`[name="${name}"]`);
+                if (el) {
+                    el.value = value;
+                    if (el.tagName === 'SELECT') {
+                        el.setAttribute('disabled', 'true');
+                        el.style.backgroundColor = '#f4f4f4';
+                        el.style.color = '#777';
+                    } else {
+                        el.setAttribute('readonly', 'true');
+                        el.style.backgroundColor = '#f4f4f4';
+                        el.style.color = '#777';
+                    }
+                }
+            }
+        }
+
+        function descargarFichaGlobalPDF() {
+            window.print();
+        }
+
+        function addProducto() {
+            const container = document.getElementById('productos-container');
+            const item = document.createElement('div');
+            item.className = 'dynamic-item';
+            item.style.position = 'relative';
+            item.style.paddingTop = '1.5rem';
+
+            const unitsOptions = `
+                <option value="">Seleccione...</option>
+                <option value="kg">kg</option>
+                <option value="Unidad">Unidad</option>
+                <option value="Litro">Litro</option>
+                <option value="Animal">Animal</option>
+                <option value="Cubeta">Cubeta</option>
+                <option value="Botella">Botella</option>
+                <option value="Bulto">Bulto</option>
+                <option value="Carga">Carga</option>
+                <option value="Servicio">Servicio</option>
+                <option value="Tonelada">Tonelada</option>
+                <option value="Arroba">Arroba</option>
+                <option value="Canastilla">Canastilla</option>
+                <option value="Saco">Saco</option>
+                <option value="Mililitro">Mililitro</option>
+                <option value="Galón">Galón</option>
+            `;
+
+            item.innerHTML = `
+                <button type="button" onclick="this.parentElement.remove()" style="position:absolute; top:0; right:0; background:#ff4d4d; color:white; border:none; border-radius:4px; padding:2px 8px; cursor:pointer; font-size:0.8rem;">Eliminar</button>
+                <div class="form-grid">
+                    <div class="form-group"><label>Nombre del producto</label><input type="text" name="nombre[]" placeholder="Ej. Queso Campesino"></div>
+                    <div class="form-group"><label>Volumen</label><input type="number" step="0.01" name="volumen[]" placeholder="Ej. 50"></div>
+                    <div class="form-group">
+                        <label>Unidad de volumen</label>
+                        <select name="unidad_volumen[]">${unitsOptions}</select>
+                    </div>
+                    <div class="form-group">
+                        <label>Frecuencia</label>
+                        <select name="frecuencia[]">
+                            <option value="">Seleccione...</option>
+                            <option value="Diarios">Diarios</option>
+                            <option value="Semanal">Semanal</option>
+                            <option value="Quincenal">Quincenal</option>
+                            <option value="Mensual">Mensual</option>
+                            <option value="Bimensual">Bimensual</option>
+                            <option value="Trimestral">Trimestral</option>
+                            <option value="Semestral">Semestral</option>
+                            <option value="Anual">Anual</option>
+                            <option value="Demanda">Demanda</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Presentación</label>
+                        <select name="presentacion[]">
+                            <option value="">Seleccione...</option>
+                            <option value="Granel">Granel</option>
+                            <option value="Empacado">Empacado</option>
+                            <option value="Botella">Botella</option>
+                            <option value="Cubeta">Cubeta</option>
+                            <option value="Bulto">Bulto</option>
+                            <option value="Cantina">Cantina</option>
+                            <option value="Animal vivo">Animal vivo</option>
+                            <option value="Marca propia">Marca propia</option>
+                            <option value="No aplica">No aplica</option>
+                            <option value="Caja">Caja</option>
+                            <option value="Bolsa">Bolsa</option>
+                            <option value="Canastilla">Canastilla</option>
+                            <option value="Tambor">Tambor</option>
+                            <option value="Big Bag">Big Bag</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>Calidad</label><input type="text" name="calidad[]" placeholder="Ej. De primera"></div>
+                    <div class="form-group"><label>Precio por unidad ($)</label><input type="number" name="precio[]" placeholder="Ej. 12000"></div>
+                    <div class="form-group">
+                        <label>Unidad del precio</label>
+                        <select name="unidad_precio[]">${unitsOptions}</select>
+                    </div>
+                </div>
+            `;
+            container.appendChild(item);
+        }
+
+        function addServicio() {
+            const container = document.getElementById('servicios-container');
+            const item = document.createElement('div');
+            item.className = 'dynamic-item';
+            item.style.position = 'relative';
+            item.style.paddingTop = '1.5rem';
+
+            item.innerHTML = `
+                <button type="button" onclick="this.parentElement.remove()" style="position:absolute; top:0; right:0; background:#ff4d4d; color:white; border:none; border-radius:4px; padding:2px 8px; cursor:pointer; font-size:0.8rem;">Eliminar</button>
+                <div class="form-grid">
+                    <div class="form-group"><label>Nombre de la actividad</label><input type="text" name="act_nombre[]" placeholder="Ej. Taller de danza"></div>
+                    <div class="form-group">
+                        <label>Frecuencia</label>
+                        <select name="act_frecuencia[]">
+                            <option value="">Seleccione...</option>
+                            <option value="Diarios">Diarios</option>
+                            <option value="Semanal">Semanal</option>
+                            <option value="Quincenal">Quincenal</option>
+                            <option value="Mensual">Mensual</option>
+                            <option value="Bimensual">Bimensual</option>
+                            <option value="Trimestral">Trimestral</option>
+                            <option value="Semestral">Semestral</option>
+                            <option value="Anual">Anual</option>
+                            <option value="Demanda">Demanda</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>Población objetivo</label><input type="text" name="act_poblacion_objetivo[]" placeholder="Ej. Jóvenes"></div>
+                    <div class="form-group"><label>Tipo de contrato / vinculación</label><input type="text" name="act_tipo_contrato[]" placeholder="Ej. Prestación de servicios"></div>
+                    <div class="form-group"><label>¿Dónde se realizan principalmente?</label><input type="text" name="act_lugar[]" placeholder="Ej. Salón Comunal"></div>
+                    <div class="form-group"><label>Recursos utilizados</label><input type="text" name="act_recursos[]" placeholder="Ej. Implementos deportivos"></div>
+                </div>
+            `;
+            container.appendChild(item);
+        }
+
+        function toggleDescripcionSistema(value) {
+            const group = document.getElementById('group-descripcion-sistema');
+            if (value === '1') {
+                group.style.display = 'block';
+            } else {
+                group.style.display = 'none';
+            }
+        }
+
+        // Form submission via API
+        document.getElementById('caracterizacion-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const btn = document.getElementById('btn-save-provisional');
+            const originalBtnText = btn.textContent;
+            
+            btn.disabled = true;
+            btn.textContent = 'Guardando...';
+
+            // Temporarily unlock disabled fields to capture their data
+            const disabledElements = form.querySelectorAll('input:disabled, select:disabled, textarea:disabled');
+            disabledElements.forEach(el => el.disabled = false);
+
+            const formData = new FormData(form);
+
+            // Re-lock fields
+            disabledElements.forEach(el => el.disabled = true);
+
+            try {
+                const res = await fetch('api/submit_caracterizacion.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await res.json();
+                if (res.ok && result.success) {
+                    document.getElementById('success-modal').style.display = 'flex';
+                } else {
+                    alert('Error al guardar: ' + (result.error || 'Ocurrió un error inesperado.'));
+                }
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                alert('Error de conexión al servidor.');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = originalBtnText;
+            }
+        });
+        
+        // Convert standard multiple selects into custom dropdowns with checkboxes
+        function initCustomMultiSelects() {
+            document.querySelectorAll('.custom-multi-select').forEach(select => {
+                // Remove older wrapper if re-init
+                if (select.parentElement && select.parentElement.classList.contains('multiselect-wrapper')) {
+                    return; // Already initialized
+                }
+
+                const wrapper = document.createElement('div');
+                wrapper.className = 'multiselect-wrapper';
+                wrapper.style.position = 'relative';
+                wrapper.style.width = '100%';
+
+                if (select.hasAttribute('disabled')) {
+                    wrapper.style.opacity = '0.7';
+                    wrapper.style.pointerEvents = 'none';
+                    wrapper.style.backgroundColor = '#f4f4f4';
+                }
+
+                const trigger = document.createElement('div');
+                trigger.style.cssText = 'border: 1px solid #ccc; border-radius: 8px; padding: 0.8rem; background: #fff; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 0.95rem;';
+                if (select.hasAttribute('disabled')) {
+                    trigger.style.backgroundColor = '#f4f4f4';
+                }
+                trigger.innerHTML = `<span class="multiselect-text">Seleccione opciones...</span> <span style="font-size:0.8em; color:#666;">▼</span>`;
+
+                const dropdown = document.createElement('div');
+                dropdown.style.cssText = 'position: absolute; top: 100%; left: 0; right: 0; background: #fff; border: 1px solid #ccc; border-radius: 8px; max-height: 250px; overflow-y: auto; z-index: 1000; display: none; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-top: 4px;';
+                dropdown.className = 'multiselect-dropdown-content';
+
+                trigger.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isVisible = dropdown.style.display === 'block';
+                    document.querySelectorAll('.multiselect-dropdown-content').forEach(d => d.style.display = 'none');
+                    dropdown.style.display = isVisible ? 'none' : 'block';
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!wrapper.contains(e.target)) dropdown.style.display = 'none';
+                });
+
+                const textSpan = trigger.querySelector('.multiselect-text');
+                const updateTriggerText = () => {
+                    const selected = Array.from(select.selectedOptions).map(opt => opt.text);
+                    if (selected.length === 0) {
+                        textSpan.textContent = 'Seleccione opciones...';
+                        textSpan.style.color = '#757575';
+                    } else if (selected.length <= 2) {
+                        textSpan.textContent = selected.join(', ');
+                        textSpan.style.color = '#333';
+                    } else {
+                        textSpan.textContent = `${selected.length} opciones seleccionadas`;
+                        textSpan.style.color = '#333';
+                    }
+                };
+
+                Array.from(select.options).forEach(option => {
+                    const item = document.createElement('div');
+                    item.style.cssText = 'padding: 0.8rem 1rem; cursor: pointer; display: flex; align-items: center; border-bottom: 1px solid #eee; transition: all 0.2s; font-size: 0.95rem; user-select: none;';
+                    item.innerHTML = `<span style="flex:1;">${option.text}</span>`;
+
+                    if (option.selected) {
+                        item.style.backgroundColor = '#f0fdf4';
+                        item.style.fontWeight = '600';
+                        item.style.color = '#1b5e20';
+                    }
+
+                    item.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        option.selected = !option.selected;
+
+                        if (option.selected) {
+                            item.style.backgroundColor = '#f0fdf4';
+                            item.style.fontWeight = '600';
+                            item.style.color = '#1b5e20';
+                        } else {
+                            item.style.backgroundColor = 'transparent';
+                            item.style.fontWeight = 'normal';
+                            item.style.color = 'inherit';
+                        }
+
+                        updateTriggerText();
+                        select.dispatchEvent(new Event('change'));
+                    });
+                    dropdown.appendChild(item);
+                });
+
+                select.style.display = 'none';
+                wrapper.appendChild(trigger);
+                wrapper.appendChild(dropdown);
+                select.parentNode.insertBefore(wrapper, select.nextSibling);
+
+                updateTriggerText();
+            });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Transporte | Somos Sumapaz</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet">
+
+    <!-- Leaflet Map & Routing -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+
+    <style>
+        :root {
+            --primary-green: #444F2F;
+            --accent-green: #687945;
+            --bg-color: #F8F9FA;
+            --card-bg: #FFFFFF;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --border-color: #E0E0E0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+        }
+
+        /* Nav Top */
+        .nav-top {
+            background-color: var(--primary-green);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-top .links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-top a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .nav-top a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .dashboard-container {
+            padding: 2rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-header h1 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-green);
+            font-size: 2.5rem;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .dashboard-header p {
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        /* KPIs */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .kpi-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .kpi-card h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #999;
+            letter-spacing: 0.1em;
+        }
+
+        .kpi-card p {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-green);
+            line-height: 1;
+        }
+
+        /* Modal Style */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 1rem;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            color: var(--primary-green);
+            font-size: 1.5rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .close-modal:hover {
+            color: #333;
+        }
+
+        .occupancy-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .occupancy-item:last-child {
+            border-bottom: none;
+        }
+
+        .occupancy-label {
+            font-weight: 600;
+            color: #444;
+        }
+
+        .occupancy-value {
+            background: var(--light-green);
+            color: var(--primary-green);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+
+        .kpi-card.clickable {
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .kpi-card.clickable:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-color: var(--accent-green);
+        }
+
+        /* Filters */
+        .filters-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .filter-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            box-sizing: border-box;
+        }
+
+        .btn-filter,
+        .btn-reset {
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            height: 45px;
+            font-family: 'Inter', sans-serif;
+            transition: opacity 0.2s;
+        }
+
+        .btn-reset {
+            background: #666;
+        }
+
+        .btn-filter:hover,
+        .btn-reset:hover {
+            opacity: 0.9;
+        }
+
+        /* Main Layout 70/30 */
+        .main-content {
+            display: flex;
+            gap: 2rem;
+            align-items: stretch;
+            height: 750px;
+        }
+
+        .map-container {
+            flex: 7;
+            /* 70% */
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            position: relative;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            flex: 3;
+            /* 30% */
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .sidebar-header {
+            background: var(--primary-green);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .sidebar-header h2 {
+            margin: 0;
+            font-size: 1.4rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        #btn-back-list {
+            position: absolute;
+            left: 15px;
+            top: 22px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: none;
+        }
+
+        #btn-back-list:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .sidebar-content {
+            padding: 1.5rem;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        /* Trips Table */
+        .trip-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .trip-table th {
+            text-align: left;
+            padding: 10px 5px;
+            border-bottom: 2px solid var(--border-color);
+            color: var(--primary-green);
+            position: sticky;
+            top: -1.5rem;
+            background: white;
+            z-index: 2;
+        }
+
+        .trip-table td {
+            padding: 10px 5px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+        }
+
+        .trip-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .btn-lupa {
+            background: transparent;
+            color: var(--primary-green);
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: transform 0.2s;
+        }
+
+        .btn-lupa:hover {
+            transform: scale(1.2);
+        }
+
+        .btn-delete-trip {
+            width: 100%;
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            font-family: 'Inter', sans-serif;
+            display: none;
+        }
+
+        .btn-delete-trip:hover {
+            background: #c82333;
+        }
+
+        /* Map Legend */
+        .map-legend {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: 1px solid var(--border-color);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+        }
+
+        .legend-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        /* Loading Overlay */
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--primary-green);
+        }
+
+
+
+        @media (max-width: 1024px) {
+            .main-content {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .map-container {
+                height: 500px;
+            }
+
+            .sidebar {
+                height: 500px;
+            }
+
+            .kpi-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="loading-overlay">Cargando datos del dashboard...</div>
+
+    <div class="nav-top">
+
+        <a href="recorrido_campo.html" style="background: transparent;">Registrar Ruta</a>
+    </div>
+
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>Panel de Control de Transporte</h1>
+            <p>Visualización interactiva, seguimiento y análisis de los viajes registrados.</p>
+        </div>
+
+        <!-- KPIs -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <h3>Total Viajes</h3>
+                <p id="kpi-viajes">-</p>
+            </div>
+            <div class="kpi-card">
+                <h3>Vehículos Usados</h3>
+                <p id="kpi-vehiculos">-</p>
+            </div>
+            <div class="kpi-card clickable" onclick="showOccupancyModal()">
+                <h3>Tasa Ocupación</h3>
+                <p id="kpi-ocupacion">-</p>
+                <small style="color: #999; font-size: 0.7rem;">Click para detalle</small>
+            </div>
+            <div class="kpi-card">
+                <h3>Vereda Más Visitada</h3>
+                <p id="kpi-vereda" style="font-size: 1.8rem;">-</p>
+            </div>
+            <div class="kpi-card">
+                <h3>Prom. Paradas / Viaje</h3>
+                <p id="kpi-paradas">-</p>
+            </div>
+        </div>
+
+        <!-- Filtros -->
+        <div class="filters-section">
+            <div class="filter-group">
+                <label for="f-fecha-ini">Fecha Inicio</label>
+                <input type="date" id="f-fecha-ini">
+            </div>
+            <div class="filter-group">
+                <label for="f-fecha-fin">Fecha Fin</label>
+                <input type="date" id="f-fecha-fin">
+            </div>
+            <div class="filter-group">
+                <label for="f-funcionario">Contratista</label>
+                <select id="f-funcionario">
+                    <option value="">Cargando...</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="f-proyecto">Proyecto</label>
+                <select id="f-proyecto">
+                    <option value="">Cargando...</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="f-vehiculo">Tipo Vehículo</label>
+                <select id="f-vehiculo">
+                    <option value="">Cargando...</option>
+                </select>
+            </div>
+            <button class="btn-filter" id="btn-apply-filters">Filtrar</button>
+            <button class="btn-reset" id="btn-reset">Limpiar</button>
+        </div>
+
+        <!-- Layout 70/30 -->
+        <div class="main-content">
+            <!-- 70% Mapa -->
+            <div class="map-container">
+                <div id="map"></div>
+
+                <!-- Leyenda -->
+                <div class="map-legend">
+                    <div class="legend-item">
+                        <div class="dot"
+                            style="background: #28a745; border: 2px solid white; box-shadow: 0 0 2px rgba(0,0,0,0.5);">
+                        </div> Origen
+                    </div>
+                    <div class="legend-item">
+                        <div class="dot"
+                            style="background: #ffc107; border: 2px solid white; box-shadow: 0 0 2px rgba(0,0,0,0.5);">
+                        </div> Parada Intermedia
+                    </div>
+                    <div class="legend-item">
+                        <div class="dot"
+                            style="background: #dc3545; border: 2px solid white; box-shadow: 0 0 2px rgba(0,0,0,0.5);">
+                        </div> Destino Final
+                    </div>
+                    <div class="legend-item" style="margin-top: 8px;">
+                        <div style="width: 25px; height: 3px; background: #2D5A27; margin-right: 5px;"></div> Ruta del
+                        Viaje
+                    </div>
+                </div>
+            </div>
+
+            <!-- 30% Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <button id="btn-back-list" onclick="showTripList()">← Volver</button>
+                    <h2>Lista de Viajes</h2>
+                </div>
+                <div class="sidebar-content" id="sidebar-content">
+                    <!-- Dynamic Table or Details go here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Ocupación -->
+    <div id="modal-ocupacion" class="modal-overlay" onclick="closeOccupancyModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2>Tasa de Ocupación Detallada</h2>
+                <button class="close-modal" onclick="closeOccupancyModal()">✕</button>
+            </div>
+            <div id="modal-occupancy-body">
+                <!-- Se llena dinámicamente -->
+            </div>
+            <p style="margin-top:1.5rem; font-size: 0.85rem; color: #666; text-align: center;">
+                * Calculado según Viajes / Vehículos-Día únicos por categoría.
+            </p>
+        </div>
+    </div>
+
+    <!-- Application Logic -->
+    <script>
+        let map;
+        let originalTrips = [];
+        let filteredTrips = [];
+        let drawnLayers = [];
+        let drawnControls = []; // Para rutas y UI de mapa separadas
+        let selectedTripId = null; // Sidebar focus
+        let drawnTripIds = new Set(); // Map multi-selection focus
+        let isAdmin = false;
+
+        let occupancyData = {}; // Para el modal de desglose
+
+        function showOccupancyModal() {
+            const body = document.getElementById('modal-occupancy-body');
+            body.innerHTML = '';
+
+            const entries = Object.entries(occupancyData);
+            if (entries.length === 0) {
+                body.innerHTML = '<p style="text-align:center; color:#999; padding: 20px;">No hay datos suficientes para el desglose por tipo.</p>';
+            } else {
+                entries.sort((a, b) => b[1] - a[1]).forEach(([tipo, tasa]) => {
+                    const item = document.createElement('div');
+                    item.className = 'occupancy-item';
+                    item.innerHTML = `
+                        <span class="occupancy-label">${tipo}</span>
+                        <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                            <span class="occupancy-value">${tasa}</span>
+                            <small style="font-size: 0.7rem; color: #999; margin-top: 4px;">Tasa de ocupación</small>
+                        </div>
+                    `;
+                    body.appendChild(item);
+                });
+            }
+            document.getElementById('modal-ocupacion').style.display = 'flex';
+        }
+
+        function closeOccupancyModal() {
+            document.getElementById('modal-ocupacion').style.display = 'none';
+        }
+
+        // Route Colors Palette
+        const ROUTE_COLORS = ['#e6194B', '#3cb44b', '#4363d8', '#f58231', '#911eb4', '#42d4f4', '#f032e6', '#000075', '#800000', '#9A6324', '#469990'];
+
+        // Core Colors
+        const COLOR_ORIGIN = '#28a745'; // Green
+        const COLOR_STOP = '#ffc107';   // Yellow
+        const COLOR_DEST = '#dc3545';   // Red
+        const COLOR_LINE = '#2D5A27';   // Primary Green
+        const COLOR_LINE_SELECTED = '#007bff'; // Blue highlight
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Check auth (only show delete button if admin)
+            try {
+                const res = await fetch('api/check_auth.php');
+                const json = await res.json();
+                if (!res.ok || !json.authenticated) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+                isAdmin = json.is_admin;
+            } catch (e) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            initMap();
+            await fetchData();
+            populateFilterOptions();
+
+            // Set Default Dates: Start of month and Today
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const firstDay = `${year}-${month}-01`;
+            const today = `${year}-${month}-${day}`;
+
+            document.getElementById('f-fecha-ini').value = firstDay;
+            document.getElementById('f-fecha-fin').value = today;
+
+            applyFilters();
+
+            // Set up UI events
+            document.getElementById('btn-apply-filters').addEventListener('click', applyFilters);
+            document.getElementById('btn-reset').addEventListener('click', () => {
+                const now = new Date();
+                const year = now.getFullYear();
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const day = String(now.getDate()).padStart(2, '0');
+
+                document.getElementById('f-fecha-ini').value = `${year}-${month}-01`;
+                document.getElementById('f-fecha-fin').value = `${year}-${month}-${day}`;
+                document.getElementById('f-funcionario').value = '';
+                document.getElementById('f-proyecto').value = '';
+                document.getElementById('f-vehiculo').value = '';
+                applyFilters();
+            });
+        });
+
+        function initMap() {
+            map = L.map('map').setView([4.05, -74.3], 10);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap'
+            }).addTo(map);
+        }
+
+        async function fetchData() {
+            try {
+                const response = await fetch('api/get_transporte_dashboard.php');
+                const json = await response.json();
+                if (json.success) {
+                    originalTrips = json.data;
+                } else {
+                    alert('Error cargando base de datos de viajes.');
+                }
+            } catch (e) {
+                console.error(e);
+                alert('Fallo de conexión.');
+            }
+            document.getElementById('loading-overlay').style.display = 'none';
+        }
+
+        function populateFilterOptions() {
+            const funcSelect = document.getElementById('f-funcionario');
+            const projSelect = document.getElementById('f-proyecto');
+            const vehicSelect = document.getElementById('f-vehiculo');
+
+            let funcionarios = new Set();
+            let proyectos = new Set();
+            let vehiculos = new Set();
+
+            originalTrips.forEach(t => {
+                if (t.funcionario) funcionarios.add(t.funcionario);
+                if (t.proyecto_nombre) {
+                    proyectos.add(t.proyecto_codigo ? `${t.proyecto_codigo} - ${t.proyecto_nombre}` : t.proyecto_nombre);
+                }
+                t.vehiculos.forEach(v => {
+                    if (v.tipo_vehiculo) vehiculos.add(v.tipo_vehiculo);
+                });
+            });
+
+            const fillSelect = (select, items) => {
+                select.innerHTML = '<option value="">Todos</option>';
+                Array.from(items).sort().forEach(item => {
+                    const opt = document.createElement('option');
+                    opt.value = item;
+                    opt.textContent = item;
+                    select.appendChild(opt);
+                });
+            };
+
+            fillSelect(funcSelect, funcionarios);
+            fillSelect(projSelect, proyectos);
+            fillSelect(vehicSelect, vehiculos);
+        }
+
+        function applyFilters() {
+            const fIni = document.getElementById('f-fecha-ini').value;
+            const fFin = document.getElementById('f-fecha-fin').value;
+            const fFunc = document.getElementById('f-funcionario').value;
+            const fProj = document.getElementById('f-proyecto').value;
+            const fVehic = document.getElementById('f-vehiculo').value;
+
+            filteredTrips = originalTrips.filter(t => {
+                // Dates -> YYYY-MM-DD
+                const tripDate = t.fecha_hora ? t.fecha_hora.split(' ')[0] : null;
+                if (fIni && tripDate && tripDate < fIni) return false;
+                if (fFin && tripDate && tripDate > fFin) return false;
+
+                if (fFunc && t.funcionario !== fFunc) return false;
+
+                if (fProj) {
+                    const pName = t.proyecto_codigo ? `${t.proyecto_codigo} - ${t.proyecto_nombre}` : t.proyecto_nombre;
+                    if (pName !== fProj) return false;
+                }
+
+                if (fVehic) {
+                    const hasVehic = t.vehiculos.some(v => v.tipo_vehiculo === fVehic);
+                    if (!hasVehic) return false;
+                }
+
+                return true;
+            });
+
+            calculateKPIs();
+            renderTripList();
+            renderMap();
+        }
+
+        function renderTripList() {
+            const sb = document.getElementById('sidebar-content');
+            document.querySelector('.sidebar-header h2').textContent = 'Lista de Viajes';
+            document.getElementById('btn-back-list').style.display = 'none';
+
+            if (filteredTrips.length === 0) {
+                sb.innerHTML = `<div class="empty-state">No se encontraron viajes con esos filtros.</div>`;
+                return;
+            }
+
+            let tableHTML = `
+                <table class="trip-table">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Funcionario</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            filteredTrips.forEach(t => {
+                const fDate = t.fecha_hora ? t.fecha_hora.split(' ')[0] : '-';
+                const fName = t.funcionario ? t.funcionario.split(' ').slice(0, 2).join(' ') : '-';
+                const btnMapIcon = drawnTripIds.has(t.id) ? '❌' : '🗺️';
+                const btnMapTitle = drawnTripIds.has(t.id) ? 'Ocultar ruta' : 'Dibujar ruta en mapa';
+
+                tableHTML += `
+                    <tr>
+                        <td>${fDate}</td>
+                        <td>${fName}</td>
+                        <td style="text-align:right; white-space: nowrap;">
+                            <button class="btn-lupa" onclick="viewTripDetails(${t.id}, true)" title="Ver Detalle">🔍</button>
+                            <button class="btn-lupa" onclick="drawTripOnMap(${t.id})" title="${btnMapTitle}">${btnMapIcon}</button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tableHTML += `</tbody></table>`;
+            sb.innerHTML = tableHTML;
+        }
+
+        function showTripList() {
+            selectedTripId = null;
+            drawnTripIds.clear();
+            renderTripList();
+            renderMap(); // Recargar mapa (lo vaciará)
+        }
+
+        function calculateKPIs() {
+            document.getElementById('kpi-viajes').textContent = filteredTrips.length;
+
+            let vehiculosUsados = new Set();
+            let paradasPorViajeroDia = {}; // Key: Placa_Fecha
+            let tripsPorTipoVehiculo = {}; // Key: tipo_vehiculo (count trips)
+            let viajerosPorTipoVehiculo = {}; // Key: tipo_vehiculo (Set of plaque_date)
+            let veredasCount = {};
+
+            filteredTrips.forEach(t => {
+                const tripDate = t.fecha_hora ? t.fecha_hora.split(' ')[0] : 'nodate';
+                t.vehiculos.forEach(v => {
+                    if (v.placa) {
+                        const key = v.placa + '_' + tripDate;
+                        const tipo = v.tipo_vehiculo || 'Otro';
+                        vehiculosUsados.add(key);
+
+                        if (!paradasPorViajeroDia[key]) paradasPorViajeroDia[key] = 0;
+                        if (!tripsPorTipoVehiculo[tipo]) tripsPorTipoVehiculo[tipo] = 0;
+                        if (!viajerosPorTipoVehiculo[tipo]) viajerosPorTipoVehiculo[tipo] = new Set();
+
+                        tripsPorTipoVehiculo[tipo]++;
+                        viajerosPorTipoVehiculo[tipo].add(key);
+
+                        // Count intermediate stops
+                        t.recorridos.forEach(r => {
+                            if (r.es_parada == 1) paradasPorViajeroDia[key]++;
+                            if (r.vereda) veredasCount[r.vereda] = (veredasCount[r.vereda] || 0) + 1;
+                        });
+                    }
+                });
+
+                if (t.origen) veredasCount[t.origen] = (veredasCount[t.origen] || 0) + 1;
+                if (t.destino_final) veredasCount[t.destino_final] = (veredasCount[t.destino_final] || 0) + 1;
+            });
+
+            document.getElementById('kpi-vehiculos').textContent = vehiculosUsados.size;
+
+            let totalParadasAjustado = 0;
+            for (let key in paradasPorViajeroDia) {
+                // Cada "Viajero Día" suma sus paradas intermedias + 1 obligatoria (destino)
+                totalParadasAjustado += (paradasPorViajeroDia[key] + 1);
+            }
+
+            // Global Occupancy Rate
+            let tasaOcupacionGlobal = vehiculosUsados.size > 0 ? (filteredTrips.length / vehiculosUsados.size).toFixed(1) : 0;
+            const tarjetaOcupacion = document.getElementById('kpi-ocupacion').parentElement;
+            document.getElementById('kpi-ocupacion').textContent = tasaOcupacionGlobal;
+
+            // breakdown for Modal
+            occupancyData = {};
+            for (let tipo in tripsPorTipoVehiculo) {
+                const numTrips = tripsPorTipoVehiculo[tipo];
+                const numViajeros = viajerosPorTipoVehiculo[tipo].size;
+                const tasa = numViajeros > 0 ? (numTrips / numViajeros).toFixed(1) : 0;
+                occupancyData[tipo] = tasa;
+            }
+
+
+            let prom = vehiculosUsados.size > 0 ? (totalParadasAjustado / vehiculosUsados.size).toFixed(1) : 0;
+            document.getElementById('kpi-paradas').textContent = prom;
+
+            // Top Vereda (Excluding internal terminals like PORTAL TUNAL o BOGOTA)
+            let topVereda = '-';
+            let maxCount = 0;
+            for (const v in veredasCount) {
+                const upperV = v.toUpperCase();
+                // Excluir Portal Tunal y similares de las estadísticas
+                if (upperV !== 'PORTAL TUNAL' && upperV !== 'BOGOTÁ' && upperV !== 'BOGOTA' && veredasCount[v] > maxCount) {
+                    maxCount = veredasCount[v];
+                    topVereda = v;
+                }
+            }
+            document.getElementById('kpi-vereda').textContent = topVereda;
+            if (topVereda.length > 15) {
+                document.getElementById('kpi-vereda').style.fontSize = '1.2rem';
+            } else {
+                document.getElementById('kpi-vereda').style.fontSize = '1.8rem';
+            }
+        }
+
+        function renderMap() {
+            // Eliminar paneles descriptivos flotantes
+            if (drawnControls && drawnControls.length > 0) {
+                drawnControls.forEach(ctrl => {
+                    if (map && ctrl) map.removeControl(ctrl);
+                });
+            }
+            drawnControls = [];
+
+            // Eliminar capas y marcadores del DOM del mapa
+            if (drawnLayers && drawnLayers.length > 0) {
+                drawnLayers.forEach(layer => {
+                    if (map && layer) map.removeLayer(layer);
+                });
+            }
+            drawnLayers = [];
+
+            // Si no hay ningún viaje seleccionado para dibujar, mostramos el mapa limpio (Rendimiento máximo)
+            if (drawnTripIds.size === 0) {
+                map.setView([4.05, -74.3], 10);
+                return;
+            }
+
+            let bounds = [];
+            let routeColorIndex = 0;
+
+            filteredTrips.forEach(trip => {
+                if (!drawnTripIds.has(trip.id)) return;
+
+                let points = [];
+                const routeColor = ROUTE_COLORS[routeColorIndex % ROUTE_COLORS.length];
+                routeColorIndex++;
+
+                console.log("Draw Map Trip:", trip.id, {
+                    origen: trip.origen,
+                    destino: trip.destino_final,
+                    recorridos: trip.recorridos,
+                    raw_coords: { o_lat: trip.origen_lat, o_lon: trip.origen_lon, d_lat: trip.destino_lat, d_lon: trip.destino_lon }
+                });
+
+                if (!trip.origen_lat || !trip.origen_lon) {
+                    console.error(`[Trip ${trip.id}] Falta origen_lat o origen_lon para origen: '${trip.origen}' (Revisar JOIN implícito con veredas_coordenadas)`);
+                }
+                if (!trip.destino_lat || !trip.destino_lon) {
+                    console.error(`[Trip ${trip.id}] Falta destino_lat o destino_lon para destino: '${trip.destino_final}' (Revisar JOIN implícito con veredas_coordenadas)`);
+                }
+
+                const extractAndDrawMarker = (latStr, lonStr, vereda, color, label, ordenText = '') => {
+                    const rawLat = latStr;
+                    const rawLon = lonStr;
+
+                    if (!latStr || !lonStr || String(latStr).trim() === '' || String(lonStr).trim() === '') {
+                        console.warn(`[Trip ${trip.id}] Coordenadas nulas/vacías para ${label} '${vereda}'. No se dibujará este punto.`);
+                        return null;
+                    }
+
+                    const cleanLat = String(latStr).replace(',', '.');
+                    const cleanLon = String(lonStr).replace(',', '.');
+
+                    const pLat = parseFloat(cleanLat);
+                    const pLon = parseFloat(cleanLon);
+
+                    if (isNaN(pLat) || isNaN(pLon)) {
+                        console.warn(`[Trip ${trip.id}] Coordenadas numéricas inválidas para ${label} '${vereda}': original_lat='${rawLat}', original_lon='${rawLon}' -> parse_lat=${pLat}, parse_lon=${pLon}`);
+                        return null;
+                    }
+
+                    // Al seleccionar un marcador en el mapa dibujado, se asume que abre el detalle de su viaje dueño
+                    const marker = L.circleMarker([pLat, pLon], {
+                        radius: 7,
+                        color: 'white',
+                        weight: 2,
+                        fillColor: color,
+                        fillOpacity: 1
+                    }).bindTooltip(`<b>${vereda}</b><br>${label} ${ordenText}`, { direction: 'top' });
+
+                    marker.on('click', () => viewTripDetails(trip.id));
+
+                    drawnLayers.push(marker);
+                    marker.addTo(map);
+                    bounds.push([pLat, pLon]);
+
+                    return [pLat, pLon, vereda];
+                };
+
+                // 1. Origenes
+                let oPt = extractAndDrawMarker(trip.origen_lat, trip.origen_lon, trip.origen, COLOR_ORIGIN, 'Origen');
+                if (oPt) points.push(oPt);
+
+                // 2. Paradas ordenadas
+                trip.recorridos.sort((a, b) => a.orden - b.orden).forEach(r => {
+                    if (!r.lat || !r.lon) {
+                        console.warn(`[Trip ${trip.id}] Faltan coordenadas en tabla de recorridos para la parada '${r.vereda}' (Orden ${r.orden})`);
+                    }
+                    let color = r.es_parada == 1 ? COLOR_STOP : '#ccc';
+                    let label = r.es_parada == 1 ? 'Parada' : 'Tránsito';
+                    let rPt = extractAndDrawMarker(r.lat, r.lon, r.vereda, color, label, `(Orden #${r.orden})`);
+                    if (rPt) points.push(rPt);
+                });
+
+                // 3. Destino
+                let dPt = extractAndDrawMarker(trip.destino_lat, trip.destino_lon, trip.destino_final, COLOR_DEST, 'Destino Final');
+                if (dPt) points.push(dPt);
+
+                console.log(`[Trip ${trip.id}] POINTS array final (Puntos válidos):`, points);
+
+                // Trazar línea de la ruta
+                if (points.length >= 2) {
+                    // Cargar vía OSRM con el color dinámico recién seleccionado
+                    const waypoints = points.map(p => L.Routing.waypoint(L.latLng(p[0], p[1]), p[2]));
+
+                    const routeControl = L.Routing.control({
+                        waypoints: waypoints,
+                        lineOptions: {
+                            styles: [{
+                                color: routeColor,
+                                opacity: 1,
+                                weight: 6
+                            }]
+                        },
+                        createMarker: () => null,
+                        routeWhileDragging: false,
+                        addWaypoints: false,
+                        show: true, // Mostrar panel de direcciones paso a paso
+                        collapsible: true, // Permitir colapsarlo
+                        language: 'es' // Instrucciones en español
+                    }).addTo(map);
+
+                    routeControl.on('routesfound', function (e) {
+                        const rb = L.latLngBounds(e.routes[0].coordinates);
+                        map.fitBounds(rb, { padding: [50, 50] });
+                    });
+
+                    drawnControls.push(routeControl);
+                } else {
+                    console.warn(`[Trip ${trip.id}] ⚠️ Descartando Ruta: No hay suficientes puntos válidos para dibujar ruta (Puntos válidos: ${points.length})`);
+                }
+            });
+
+            if (bounds.length > 0) {
+                map.fitBounds(bounds, { padding: [30, 30] });
+            }
+        }
+
+        function drawTripOnMap(id) {
+            // Toggle de dibujo de ruta
+            if (drawnTripIds.has(id)) {
+                drawnTripIds.delete(id);
+            } else {
+                drawnTripIds.add(id);
+            }
+            renderTripList(); // Re-renderizar iconos en tabla
+            renderMap();
+        }
+
+        function viewTripDetails(id, alsoDraw = true) {
+            selectedTripId = id;
+            if (alsoDraw && !drawnTripIds.has(id)) {
+                drawnTripIds.add(id);
+                renderTripList(); // Actualizar el botón del mapa también
+                renderMap();
+            }
+
+            // Populate Sidebar
+            const trip = filteredTrips.find(t => t.id === id);
+            if (!trip) return;
+
+            document.querySelector('.sidebar-header h2').textContent = 'Detalles del Viaje';
+            document.getElementById('btn-back-list').style.display = 'inline-block';
+
+            const sb = document.getElementById('sidebar-content');
+
+            let vehiculosHTML = '';
+            if (trip.vehiculos && trip.vehiculos.length > 0) {
+                trip.vehiculos.forEach(v => {
+                    vehiculosHTML += `<span class="badge">${v.tipo_vehiculo || 'Vehículo'} - ${v.placa || 'Sin placa'}</span>`;
+                });
+            } else {
+                vehiculosHTML = `<span class="detail-value" style="color: #999;">Ninguno asignado</span>`;
+            }
+
+            let pName = trip.proyecto_nombre || 'No registrado';
+            if (trip.proyecto_codigo) pName = `${trip.proyecto_codigo} - ${pName}`;
+
+            sb.innerHTML = `
+                <div class="detail-item">
+                    <span class="detail-label">Ruta</span>
+                    <p class="detail-value" style="color: var(--primary-green); font-weight: 700;">
+                        ${trip.origen} ➔ ${trip.destino_final}
+                    </p>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Responsable / Funcionario</span>
+                    <p class="detail-value">${trip.funcionario || '-'}</p>
+                    <p class="detail-value" style="font-size: 0.9rem; color: #666; margin-top: 0.2rem;">
+                        Doc: ${trip.numero_documento || '-'} | Tel: ${trip.telefono || '-'}
+                    </p>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Fecha del viaje</span>
+                    <p class="detail-value">${trip.fecha_hora || '-'}</p>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Proyecto Responsable</span>
+                    <p class="detail-value">${pName}</p>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Propósito / Meta</span>
+                    <p class="detail-value">${trip.proposito || '-'} / ${trip.meta || '-'}</p>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Actividad a desarrollar</span>
+                    <p class="detail-value">${trip.actividad || '-'}</p>
+                </div>
+                <div class="detail-item" style="border-bottom: none;">
+                    <span class="detail-label">Vehículos y Operadores Asociados</span>
+                    <div>${vehiculosHTML}</div>
+                </div>
+
+                ${isAdmin ? `
+                <button class="btn-delete-trip" style="display: block;" onclick="requestDelete(${trip.id}, '${trip.funcionario}')">
+                    Eliminar este viaje
+                </button>
+                ` : ''}
+                <button onclick="showTripList()" class="btn-action" style="background-color: #6c757d; margin-top: 1.5rem; width: 100%;">
+                    ← Volver a la Lista
+                </button>
+            `;
+
+            sb.innerHTML = detailsHTML;
+        }
+
+        async function requestDelete(id, name) {
+            if (!confirm(`¿Estás seguro que deseas eliminar permanentemente el viaje de ${name}?`)) return;
+
+            try {
+                // Same endpoint currently working for delete
+                const res = await fetch('api/delete_viaje.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id })
+                });
+                const result = await res.json();
+                if (result.success) {
+                    alert('Viaje eliminado extosamente.');
+                    location.reload();
+                } else {
+                    alert('Error: ' + result.error);
+                }
+            } catch (e) { alert('Error de red al intentar eliminar.'); }
+        }
+
+    </script>
+</body>
+
+</html>

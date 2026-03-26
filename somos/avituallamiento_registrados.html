@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proveedores de Avituallamiento | Somos Sumapaz</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet">
+    <!-- Static Cache-Busting -->
+    <script>
+        const timestamp = new Date().getTime();
+        document.write(`<link rel="stylesheet" href="assets/styles.css?v=${timestamp}">`);
+    </script>
+    <style>
+        .hero-section {
+            position: relative;
+            background-image: url('assets/fondo.jpg');
+            background-size: cover;
+            background-position: center;
+            min-height: 280px;
+            padding: 4rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            margin: -3rem -2rem 3rem -2rem;
+            /* Negate main padding */
+            border-bottom: 5px solid var(--primary-green);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(68, 79, 47, 0.8) 0%, rgba(0, 0, 0, 0.4) 100%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 1000px;
+            width: 100%;
+            padding: 0 2rem;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .glass-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem 1rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            margin-top: 1rem;
+            min-width: 180px;
+            flex: 1;
+        }
+
+        .glass-card h3 {
+            color: #999;
+            margin: 0 0 0.5rem 0;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 2.8em;
+            width: 100%;
+        }
+
+        .glass-card p {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-green);
+            margin: 0;
+            line-height: 1;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            width: 100%;
+            line-height: 1.2;
+        }
+
+        .btn-link-doc {
+            background-color: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 0.4rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 0.3rem;
+            white-space: nowrap;
+        }
+
+        .btn-link-doc:hover {
+            background-color: #3b4429;
+            color: white;
+        }
+    </style>
+    <!-- Excel Export Library -->
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+</head>
+
+<body>
+    <!-- Static Header -->
+    <header id="main-header">
+        <nav class="navbar-custom">
+            <div class="container" style="display: flex; align-items: center;">
+
+                <a href="index.html">
+                    <img src="assets/logo_somossumapaz.png" alt="Somos Sumapaz" class="logo-img">
+                </a>
+
+                <div class="search-container"
+                    style="margin-left: auto; display: flex; align-items: center; gap: 1.5rem;">
+
+                    <!-- Admin Options (Login / Dashboard) -->
+                    <div id="header-auth-container" style="display: flex; align-items: center; gap: 1rem;">
+
+                        <a href="inscripcion_productores.html" class="nav-link-btn" id="btn-register"
+                            style="display: none; margin: 0; background-color: transparent; color: #FBF4DE; border: none; font-weight: 600;">
+                            Registrar Productor
+                        </a>
+                        <a href="inscripcion_avituallamiento.html" class="nav-link-btn" id="btn-avituallamiento"
+                            style="display: none; margin: 0; background-color: transparent; color: #FBF4DE; border: none; font-weight: 600;">
+                            Registrar Avituallamiento
+                        </a>
+                        <a href="productores_registrados.html" class="nav-link-btn" id="btn-dashboard-prod"
+                            style="display: none; margin: 0; background-color: transparent; color: #FBF4DE; border: none; font-weight: 600;">
+                            Dashboard Prod.
+                        </a>
+                        <a href="transporte_seguimiento.html" class="nav-link-btn" id="btn-tracking"
+                            style="margin: 0; background-color: transparent; color: #FBF4DE; border: none; font-weight: 600;">
+                            Seguimiento
+                        </a>
+
+                        <button onclick="logout()" class="nav-link-btn" id="btn-logout"
+                            style="display: none; margin: 0; background-color: transparent; cursor: pointer; color: #FBF4DE; border: none;"
+                            title="Cerrar Sesión">
+
+                            <svg fill="none" viewBox="0 0 24 24" stroke="#FBF4DE" stroke-width="2"
+                                style="width: 24px; height: 24px; transform: scaleX(-1);">
+
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                            </svg>
+
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main style="padding: 3rem 2rem 5rem 2rem; width: 100%; max-width: 100%; box-sizing: border-box;">
+        <section class="hero-section">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <h1 class="hero-title" style="color: #FBF4DE; margin-bottom: 0;">Proveedores de Avituallamiento</h1>
+                <div
+                    style="display: flex; gap: 2.5rem; justify-content: center; align-items: stretch; margin-top: 0.5rem; width: 100%;">
+                    <div class="glass-card" style="margin-top: 0;">
+                        <h3>Total Proveedores</h3>
+                        <p id="total-productores-count">0</p>
+                    </div>
+                    <div class="glass-card" style="margin-top: 0;">
+                        <h3>Vereda Principal</h3>
+                        <p id="top-vereda-name" style="font-size: 1.4rem;">-</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filtros -->
+        <div
+            style="background-color: #EFEBE4; padding: 2rem; border-radius: 12px; margin-bottom: 2rem; display: flex; flex-direction: column; gap: 1.5rem;">
+            <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-end;">
+                <div style="flex: 1; min-width: 200px;">
+                    <label for="filter-nombre"
+                        style="font-weight: 600; display: block; margin-bottom: 0.5rem; color: #444F2F;">Nombre
+                        Completo</label>
+                    <input type="text" id="filter-nombre" placeholder="Buscar por nombre..."
+                        style="width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 8px;">
+                </div>
+                <div style="flex: 1; min-width: 200px;">
+                    <label for="filter-vereda"
+                        style="font-weight: 600; display: block; margin-bottom: 0.5rem; color: #444F2F;">Vereda</label>
+                    <select id="filter-vereda"
+                        style="width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 8px;">
+                        <option value="">Todas las Veredas</option>
+                        <option value="SAN JOSE">SAN JOSE</option>
+                        <option value="NUEVA GRANADA">NUEVA GRANADA</option>
+                        <option value="CONCEPCION">CONCEPCION</option>
+                        <option value="TUNAL ALTO">TUNAL ALTO</option>
+                        <option value="LAGUNITAS">LAGUNITAS</option>
+                        <option value="TUNAL BAJO">TUNAL BAJO</option>
+                        <option value="LA UNION">LA UNION URBANO</option>
+                        <option value="CHORRERAS">CHORRERAS</option>
+                        <option value="SANTO DOMINGO">SANTO DOMINGO</option>
+                        <option value="LAS VEGAS">LAS VEGAS</option>
+                        <option value="SAN JUAN">SAN JUAN</option>
+                        <option value="CAPITOLIO">CAPITOLIO</option>
+                        <option value="EL TOLDO">EL TOLDO</option>
+                        <option value="LAS SOPAS">LAS SOPAS</option>
+                        <option value="LOS RIOS">LOS RIOS</option>
+                        <option value="SAN ANTONIO">SAN ANTONIO</option>
+                        <option value="LAS PALMAS">LAS PALMAS</option>
+                        <option value="LAS ANIMAS">LAS ANIMAS</option>
+                        <option value="LAS AURAS">LAS AURAS</option>
+                        <option value="NAZARETH">NAZARETH URBANO</option>
+                        <option value="TAQUECITOS">TAQUECITOS</option>
+                        <option value="PEÑALIZA">PEÑALIZA</option>
+                        <option value="LAGUNA VERDE">LAGUNA VERDE</option>
+                        <option value="RAIZAL">RAIZAL</option>
+                        <option value="SANTA ROSA">SANTA ROSA</option>
+                        <option value="BETANIA">BETANIA</option>
+                        <option value="EL ITSMO">EL ITSMO</option>
+                        <option value="EL TABACO">EL TABACO</option>
+                    </select>
+                </div>
+                <div style="flex: 1; min-width: 180px;">
+                    <label for="filter-fecha"
+                        style="font-weight: 600; display: block; margin-bottom: 0.5rem; color: #444F2F;">Fecha
+                        Inscripción</label>
+                    <input type="date" id="filter-fecha"
+                        style="width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 8px;">
+                </div>
+            </div>
+
+            <!-- Botones -->
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <button type="button" class="btn btn-submit"
+                    style="height: 50px; width: 220px; margin: 0; padding: 0; background-color: var(--primary-green); color: #FBF4DE; border-radius: 30px; font-weight: 600; font-family: 'Inter', sans-serif; font-size: 1rem; display: flex; align-items: center; justify-content: center; border: none;"
+                    id="btn-reset-filters">
+                    Limpiar Filtros
+                </button>
+                <button type="button" class="btn"
+                    style="height: 50px; width: 220px; margin: 0; padding: 0; background-color: #444F2F; color: #FBF4DE; border-radius: 30px; font-weight: 600; font-family: 'Inter', sans-serif; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; border: none;"
+                    onclick="exportToExcel()">
+                    <svg style="width:20px; height:20px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                        stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    Descargar Excel
+                </button>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="data-table" id="productores-table">
+                <thead>
+                    <tr>
+                        <th>Fecha Inscripción</th>
+                        <th>Nombre</th>
+                        <th>Documento</th>
+                        <th>Fecha de Nacimiento</th>
+                        <th>Vereda</th>
+                        <th>Teléfono</th>
+                        <th>Correo</th>
+                        <th>Predio</th>
+                        <th style="text-align: center;">Soportes</th>
+                    </tr>
+                </thead>
+                <tbody id="productores-tbody">
+                    <!-- Data will be loaded via JS -->
+                    <tr>
+                        <td colspan="9" style="text-align: center; padding: 2rem;">Cargando proveedores...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+
+    <script>
+        let allProducers = [];
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const tbody = document.getElementById('productores-tbody');
+
+            // Wait for filters
+            const filterNombre = document.getElementById('filter-nombre');
+            const filterVereda = document.getElementById('filter-vereda');
+            const filterFecha = document.getElementById('filter-fecha');
+            const btnReset = document.getElementById('btn-reset-filters');
+
+            // --- AUTH CHECK FIRST ---
+            try {
+                const authRes = await fetch('api/check_auth.php');
+                const authResult = await authRes.json();
+
+                if (!authRes.ok || !authResult.authenticated) {
+                    window.location.href = 'login';
+                    return; // Stop rendering
+                } else {
+                    window.isAdmin = authResult.is_admin;
+                    document.getElementById('btn-register').style.display = 'inline-block';
+                    document.getElementById('btn-avituallamiento').style.display = 'inline-block';
+                    document.getElementById('btn-dashboard-prod').style.display = 'inline-block';
+                    document.getElementById('btn-logout').style.display = 'inline-block';
+                }
+            } catch (error) {
+                console.error('Error checking auth:', error);
+                window.location.href = 'login';
+                return;
+            }
+            // ------------------------
+
+            try {
+                const response = await fetch('api/get_avituallamiento.php');
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    allProducers = result.data;
+                    renderTable(allProducers);
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; color: red;">Error: ${result.error || 'No se pudo cargar la información'}</td></tr>`;
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; color: red;">Error de red al intentar cargar la información.</td></tr>`;
+            }
+
+            // Filter Event Listeners
+            filterNombre.addEventListener('input', applyFilters);
+            filterVereda.addEventListener('change', applyFilters);
+            filterFecha.addEventListener('change', applyFilters);
+
+            btnReset.addEventListener('click', () => {
+                filterNombre.value = '';
+                filterVereda.value = '';
+                filterFecha.value = '';
+                renderTable(allProducers);
+            });
+        });
+
+        function applyFilters() {
+            const nombreVal = document.getElementById('filter-nombre').value.toLowerCase();
+            const veredaVal = document.getElementById('filter-vereda').value;
+            const fechaVal = document.getElementById('filter-fecha').value; // format: YYYY-MM-DD
+
+            const filteredData = allProducers.filter(p => {
+                let matchNombre = true;
+                let matchVereda = true;
+                let matchFecha = true;
+
+                if (nombreVal) {
+                    matchNombre = p.nombre_completo.toLowerCase().includes(nombreVal);
+                }
+
+                if (veredaVal) {
+                    matchVereda = p.vereda === veredaVal;
+                }
+
+                if (fechaVal && p.fecha_creacion) {
+                    matchFecha = p.fecha_creacion.startsWith(fechaVal);
+                }
+
+                return matchNombre && matchVereda && matchFecha;
+            });
+
+            renderTable(filteredData);
+        }
+
+        function renderTable(dataToDraw) {
+            const tbody = document.getElementById('productores-tbody');
+            tbody.innerHTML = ''; // Clear loading/existing text
+
+            // Update statistics cards
+            const totalCountElement = document.getElementById('total-productores-count');
+            const topVeredaElement = document.getElementById('top-vereda-name');
+
+            if (totalCountElement) totalCountElement.textContent = dataToDraw.length;
+
+            if (dataToDraw.length > 0) {
+                // Calculate unique veredas and counts
+                const veredaCounts = {};
+                dataToDraw.forEach(p => {
+                    if (p.vereda) {
+                        veredaCounts[p.vereda] = (veredaCounts[p.vereda] || 0) + 1;
+                    }
+                });
+
+                // Top vereda
+                if (topVeredaElement) {
+                    let topVereda = '-';
+                    let maxCount = 0;
+                    for (const v in veredaCounts) {
+                        if (veredaCounts[v] > maxCount) {
+                            maxCount = veredaCounts[v];
+                            topVereda = v;
+                        }
+                    }
+                    topVeredaElement.innerHTML = `<span>${topVereda}</span><span style="font-size: 1rem; font-weight: 500; opacity: 0.8; margin-top: 0.4rem;">(${maxCount})</span>`;
+                }
+            } else {
+                if (topVeredaElement) topVeredaElement.textContent = '-';
+            }
+
+            if (dataToDraw.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; padding: 2rem;">No se encontraron resultados.</td></tr>';
+                return;
+            }
+
+            dataToDraw.forEach(productor => {
+                const tr = document.createElement('tr');
+                const docStr = `${productor.tipo_documento} ${productor.numero_documento}`;
+                const correo = productor.correo_electronico ? productor.correo_electronico : '-';
+
+                // Show full date and time
+                const formattedDate = productor.fecha_creacion || '-';
+
+                tr.innerHTML = `
+                    <td><strong>${formattedDate}</strong></td>
+                    <td>${productor.nombre_completo}</td>
+                    <td>${docStr}</td>
+                    <td>${productor.fecha_nacimiento}</td>
+                    <td>${productor.vereda}</td>
+                    <td>${productor.telefono}</td>
+                    <td>${correo}</td>
+                    <td>${productor.nombre_predio}</td>
+                    <td style="text-align: center; vertical-align: middle; display: flex; flex-direction: column; align-items: center;">
+                        ${productor.id_cedula ? `<a href="soportes_avituallamiento/${productor.id_cedula}" target="_blank" class="btn-link-doc">Cédula</a>` : ''}
+                        ${productor.id_rut ? `<a href="soportes_avituallamiento/${productor.id_rut}" target="_blank" class="btn-link-doc">RUT</a>` : ''}
+                        ${productor.id_curso_manipulacion ? `<a href="soportes_avituallamiento/${productor.id_curso_manipulacion}" target="_blank" class="btn-link-doc">Curso Manipulación</a>` : ''}
+                        ${productor.id_certificacion_bancaria ? `<a href="soportes_avituallamiento/${productor.id_certificacion_bancaria}" target="_blank" class="btn-link-doc">Certificación Bancaria</a>` : ''}
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+
+        async function logout() {
+            try {
+                await fetch('api/logout.php');
+                window.location.href = 'login.html';
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+        }
+
+        function exportToExcel() {
+            // Get currently filtered data (or all if no filters)
+            const nombreVal = document.getElementById('filter-nombre').value.toLowerCase();
+            const veredaVal = document.getElementById('filter-vereda').value;
+            const fechaVal = document.getElementById('filter-fecha').value;
+
+            const dataToExport = allProducers.filter(p => {
+                let matchNombre = !nombreVal || p.nombre_completo.toLowerCase().includes(nombreVal);
+                let matchVereda = !veredaVal || p.vereda === veredaVal;
+                let matchFecha = !fechaVal || (p.fecha_creacion && p.fecha_creacion.startsWith(fechaVal));
+                return matchNombre && matchVereda && matchFecha;
+            });
+
+            if (dataToExport.length === 0) {
+                alert('No hay datos para exportar.');
+                return;
+            }
+
+            // Create a standard CSV flat file (archivo plano)
+            const headers = [
+                'Fecha Inscripción', 'Nombre Completo', 'Tipo Documento', 'Número Documento',
+                'Vereda', 'Teléfono', 'Correo Electrónico', 'Nombre Predio', 'Fecha Nacimiento'
+            ];
+
+            // BOM (Byte Order Mark) forces Excel to read UTF-8 properly (accents)
+            let csvString = '\uFEFF' + headers.join(';') + '\r\n';
+
+            dataToExport.forEach(p => {
+                const row = [
+                    p.fecha_creacion || '-',
+                    `"${p.nombre_completo || '-'}"`,
+                    p.tipo_documento || '-',
+                    p.numero_documento || '-',
+                    `"${p.vereda || '-'}"`,
+                    p.telefono || '-',
+                    `"${p.correo_electronico || '-'}"`,
+                    `"${p.nombre_predio || '-'}"`,
+                    p.fecha_nacimiento || '-'
+                ];
+                csvString += row.join(';') + '\r\n';
+            });
+
+            // Generate native download link
+            const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            link.setAttribute("download", `proveedores_avituallamiento_${new Date().toISOString().split('T')[0]}.csv`);
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+
+</html>

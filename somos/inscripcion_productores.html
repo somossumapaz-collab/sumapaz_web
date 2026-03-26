@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscripción | Somos Sumapaz</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet">
+    <!-- Static Cache-Busting -->
+    <script>
+        const timestamp = new Date().getTime();
+        document.write(`<link rel="stylesheet" href="assets/styles.css?v=${timestamp}">`);
+    </script>
+</head>
+
+<body>
+    <!-- Static Header -->
+    <header id="main-header">
+        <nav class="navbar-custom">
+            <div class="container" style="display: flex; align-items: center;">
+
+                <a href="index.html">
+                    <img src="assets/logo_somossumapaz.png" alt="Somos Sumapaz" class="logo-img">
+                </a>
+
+                <div class="search-container"
+                    style="margin-left: auto; display: flex; align-items: center; gap: 1.5rem;">
+
+                    <!-- Admin Options (Login / Dashboard / Inscripción) -->
+                    <div id="header-auth-container" style="display: none; align-items: center; gap: 1rem;">
+
+                        <a href="inscripcion_productores.html" class="nav-link-btn" id="btn-register"
+                            style="margin: 0; background-color: transparent; color: #FBF4DE; border: none; font-weight: 600; padding: 8px 14px; border-radius: 6px;">
+                            Registrar Productor
+                        </a>
+
+                        <a href="inscripcion_avituallamiento.html" class="nav-link-btn" id="btn-avituallamiento"
+                            style="margin: 0; background-color: transparent; color: #FBF4DE; border: none; font-weight: 600; padding: 8px 14px; border-radius: 6px;">
+                            Avituallamiento
+                        </a>
+
+                        <a href="productores_registrados.html" class="nav-link-btn" id="btn-dashboard"
+                            style="margin: 0; background-color: transparent; color: #FBF4DE; border: none; font-weight: 600; padding: 8px 14px; border-radius: 6px;">
+                            Dashboard
+                        </a>
+
+                        <button onclick="logout()" class="nav-link-btn" id="btn-logout"
+                            style="margin: 0; background-color: transparent; cursor: pointer; color: #FBF4DE; border: none; padding: 8px; border-radius: 6px;"
+                            title="Cerrar Sesión">
+
+                            <svg fill="none" viewBox="0 0 24 24" stroke="#FBF4DE" stroke-width="2"
+                                style="width: 24px; height: 24px; transform: scaleX(-1);">
+
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                            </svg>
+
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container" style="padding-top: 3rem; padding-bottom: 5rem;">
+        <div class="form-wrapper">
+            <h1 class="serif form-title" id="page-title">Formulario de Inscripción Productores Sumapaz</h1>
+            <p class="form-subtitle" id="page-subtitle"> Por favor diligencia los siguientes datos.</p>
+
+            <form id="inscripcion-form" class="custom-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="nombre">Nombre Completo *</label>
+                        <input type="text" id="nombre" name="nombre" required placeholder="Ej. Juan Pérez">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tipo_documento">Tipo de Documento *</label>
+                        <select id="tipo_documento" name="tipo_documento" required>
+                            <option value="" disabled selected>Selecciona una opción</option>
+                            <option value="Cédula de Ciudadanía">Cédula de Ciudadanía</option>
+                            <option value="Pasaporte">Pasaporte</option>
+                            <option value="NIT">NIT</option>
+                            <option value="Cédula de Extranjería">Cédula de Extranjería</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cedula">Número de Documento *</label>
+                        <input type="text" id="cedula" name="cedula" required placeholder="Ej. 1234567890">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fecha_nacimiento">Fecha de Nacimiento *</label>
+                        <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="telefono">Teléfono / Celular *</label>
+                        <input type="tel" id="telefono" name="telefono" required placeholder="Ej. 300 123 4567">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="correo">Correo Electrónico (Opcional)</label>
+                        <input type="email" id="correo" name="correo" placeholder="ejemplo@correo.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="vereda">Vereda *</label>
+                        <select id="vereda" name="vereda" required>
+                            <option value="" disabled selected>Selecciona una vereda</option>
+                            <option value="SAN JOSE">SAN JOSE</option>
+                            <option value="NUEVA GRANADA">NUEVA GRANADA</option>
+                            <option value="CONCEPCION">CONCEPCION</option>
+                            <option value="TUNAL ALTO">TUNAL ALTO</option>
+                            <option value="LAGUNITAS">LAGUNITAS</option>
+                            <option value="TUNAL BAJO">TUNAL BAJO</option>
+                            <option value="LA UNION">LA UNION URBANO</option>
+                            <option value="CHORRERAS">CHORRERAS</option>
+                            <option value="SANTO DOMINGO">SANTO DOMINGO</option>
+                            <option value="LAS VEGAS">LAS VEGAS</option>
+                            <option value="SAN JUAN">SAN JUAN</option>
+                            <option value="CAPITOLIO">CAPITOLIO</option>
+                            <option value="EL TOLDO">EL TOLDO</option>
+                            <option value="LAS SOPAS">LAS SOPAS</option>
+                            <option value="LOS RIOS">LOS RIOS</option>
+                            <option value="SAN ANTONIO">SAN ANTONIO</option>
+                            <option value="LAS PALMAS">LAS PALMAS</option>
+                            <option value="LAS ANIMAS">LAS ANIMAS</option>
+                            <option value="LAS AURAS">LAS AURAS</option>
+                            <option value="NAZARETH">NAZARETH URBANO</option>
+                            <option value="TAQUECITOS">TAQUECITOS</option>
+                            <option value="PEÑALIZA">PEÑALIZA</option>
+                            <option value="LAGUNA VERDE">LAGUNA VERDE</option>
+                            <option value="RAIZAL">RAIZAL</option>
+                            <option value="SANTA ROSA">SANTA ROSA</option>
+                            <option value="BETANIA">BETANIA</option>
+                            <option value="EL ITSMO">EL ITSMO</option>
+                            <option value="EL TABACO">EL TABACO</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nombre_predio">Nombre del Predio *</label>
+                        <input type="text" id="nombre_predio" name="nombre_predio" required
+                            placeholder="Ej. Finca La Esperanza">
+                    </div>
+                </div>
+
+                <div class="form-submit-container" id="create-actions">
+                    <button type="submit" class="btn btn-submit" id="submit-btn-main">Enviar Inscripción</button>
+                </div>
+
+                <div class="form-submit-container" id="edit-actions" style="display: none;">
+                    <button type="button" class="btn btn-submit" style="background-color: #757575;"
+                        onclick="window.location.href='productores_registrados.html'">Cancelar</button>
+                    <button type="submit" class="btn btn-submit" id="submit-btn-edit">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Custom Success Modal -->
+    <div id="success-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <img src="assets/logo_somossumapaz.png" alt="Exito" style="width: 80px; height: auto;">
+            </div>
+            <h2 class="serif modal-title" id="success-title">¡Inscripción Exitosa!</h2>
+            <p class="modal-text" id="success-message">Gracias por realizar la inscripción de productores locales.
+                Pronto nos pondremos en contacto contigo.</p>
+            <button id="modal-close-btn" class="btn btn-submit"
+                style="width: 100%; margin-top: 1.5rem;">Aceptar</button>
+        </div>
+    </div>
+
+    <!-- Custom Error Modal -->
+    <div id="error-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-icon" style="background: #444F2F;">
+                <img src="assets/logo_somossumapaz.png" alt="Error"
+                    style="width: 80px; height: auto; filter: grayscale(100%);">
+            </div>
+            <h2 class="serif modal-title" style="color: #D32F2F;">Aviso</h2>
+            <p id="error-modal-text" class="modal-text">Ocurrió un error inesperado al enviar la inscripción.</p>
+            <button id="error-close-btn" class="btn btn-submit"
+                style="width: 100%; margin-top: 1.5rem; background-color: #D32F2F;">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- App Logic -->
+    <script>
+        let currentEditId = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+
+            // --- AUTH CHECK: Do not strictly protect, just show header if logged in ---
+            try {
+                const authRes = await fetch('api/check_auth.php');
+                const authResult = await authRes.json();
+
+                if (authRes.ok && authResult.authenticated) {
+                    // Show admin header items since user is logged in
+                    document.getElementById('header-auth-container').style.display = 'flex';
+                }
+            } catch (error) {
+                console.error('Error checking auth:', error);
+            }
+            // ------------------------
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const editId = urlParams.get('edit');
+
+            if (editId) {
+                currentEditId = editId;
+
+                // Change UI for Edit Mode
+                document.getElementById('page-title').textContent = 'Editar Productor';
+                document.getElementById('page-subtitle').textContent = 'Actualiza la información del productor seleccionado.';
+                document.getElementById('create-actions').style.display = 'none';
+                const editActions = document.getElementById('edit-actions');
+                editActions.style.display = 'flex';
+                editActions.style.gap = '1rem';
+                editActions.style.justifyContent = 'center';
+
+                // Fetch existing data
+                try {
+                    const response = await fetch(`api/get_productor.php?id=${editId}`);
+                    const result = await response.json();
+
+                    if (response.ok && result.success) {
+                        const p = result.data;
+                        document.getElementById('nombre').value = p.nombre_completo;
+                        document.getElementById('tipo_documento').value = p.tipo_documento;
+                        document.getElementById('cedula').value = p.numero_documento;
+                        document.getElementById('fecha_nacimiento').value = p.fecha_nacimiento;
+                        document.getElementById('telefono').value = p.telefono;
+                        document.getElementById('correo').value = p.correo_electronico || '';
+                        document.getElementById('vereda').value = p.vereda;
+                        document.getElementById('nombre_predio').value = p.nombre_predio;
+                    } else {
+                        alert('Error cargando productor: ' + (result.error || 'Desconocido'));
+                        window.location.href = 'productores_registrados';
+                    }
+                } catch (error) {
+                    console.error('Error fetching producer:', error);
+                    alert('Error de red al intentar cargar la información.');
+                }
+            }
+        });
+
+        document.getElementById('inscripcion-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const submitBtnId = currentEditId ? 'submit-btn-edit' : 'submit-btn-main';
+            const submitBtn = document.getElementById(submitBtnId);
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Enviando...';
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+
+            let apiUrl = 'api/submit_inscripcion.php';
+            if (currentEditId) {
+                apiUrl = 'api/update_productor.php';
+                data.id = currentEditId;
+            }
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST', // OR PUT for REST fans, but PHP scripts above use POST internally typically, or we check for both. Actually update_productor handles POST.
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    if (currentEditId) {
+                        document.getElementById('success-title').textContent = '¡Actualización Exitosa!';
+                        document.getElementById('success-message').textContent = 'Los datos del productor han sido guardados correctamente.';
+                    }
+                    // Show custom modal
+                    document.getElementById('success-modal').classList.add('active');
+                } else {
+                    document.getElementById('error-modal-text').textContent = result.error || 'Ocurrió un problema al enviar la información.';
+                    document.getElementById('error-modal').classList.add('active');
+                }
+            } catch (error) {
+                console.error('Error enviando formulario:', error);
+                document.getElementById('error-modal-text').textContent = 'Ocurrió un error de red al intentar enviar el formulario. Por favor, intenta de nuevo más tarde.';
+                document.getElementById('error-modal').classList.add('active');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            }
+        });
+
+        // Close Modal Logic
+        document.getElementById('modal-close-btn').addEventListener('click', function () {
+            document.getElementById('success-modal').classList.remove('active');
+            if (currentEditId) {
+                window.location.href = 'productores_registrados';
+            } else {
+                document.getElementById('inscripcion-form').reset();
+            }
+        });
+
+        document.getElementById('error-close-btn').addEventListener('click', function () {
+            document.getElementById('error-modal').classList.remove('active');
+        });
+    </script>
+    <script type="module" src="assets/main.js"></script>
+</body>
+
+</html>

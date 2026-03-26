@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Memoria Viva de Sumapaz</title>
+
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+</head>
+<body>
+
+  <!-- HERO -->
+  <div class="hero-banner-bg"></div>
+
+  <section class="hero-spacer" id="inicio">
+    <div class="hero-fixed-content" id="heroFixedContent">
+      <p class="hero-kicker">Bienvenidos a la</p>
+      <h1 class="hero-title">MEMORIA VIVA<br>DE SUMAPAZ</h1>
+    </div>
+  </section>
+
+  <!-- CONTENIDO GENERAL -->
+  <main class="page-shell">
+    <div class="page-surface"></div>
+
+    <!-- INTRO -->
+    <section class="intro-overlay">
+      <div class="container">
+        <p class="intro-text">
+          Queremos visibilizar y dignificar las memorias del campesinado y las
+          víctimas del conflicto armado en el territorio de Sumapaz, a través de
+          un ejercicio de cartografía social que reconoce los lugares significativos
+          para la comunidad, promueve la reflexión colectiva sobre el pasado y
+          fortalece la identidad territorial, la resistencia y la construcción de paz.
+        </p>
+      </div>
+    </section>
+
+    <!-- VIDEO -->
+    <section class="video-section" id="video">
+      <div class="container">
+        <div class="video-wrap">
+          <video controls preload="metadata">
+            <source src="assets/img/1video_editado.mp4" type="video/mp4" />
+            Tu navegador no soporta la reproducción de video.
+          </video>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROCESO / TIMELINE -->
+    <section class="process-section" id="proceso">
+      <div class="container process-container">
+
+        <div class="process-grid">
+          <h2 class="process-title">
+            <span class="process-title-main">Sumapaz</span>
+            <span class="process-title-sub">geografías de memoria y resistencia</span>
+          </h2>
+
+          <p class="process-description">
+            Esta fase del proceso de memoria en Sumapaz consistió en la realización
+            de sesiones participativas entre la comunidad, la Alcaldía Local de
+            Sumapaz y el Centro de Memoria, Paz y Reconciliación, donde a través de
+            diversas herramientas pedagógicas y populares se construyó una cartografía
+            de memoria que profundiza en la historia del territorio como lugar de
+            disputa, resistencia y paz.
+          </p>
+        </div>
+
+        <!-- TIMELINE SUPERIOR -->
+        <div class="timeline-header">
+          <div class="timeline-line"></div>
+          <div class="timeline-progress"></div>
+          <div class="timeline-progress-dot"></div>
+
+          <button class="timeline-stop active" data-target="cmpr" type="button">
+            <span class="timeline-stop-label">CMPR</span>
+          </button>
+
+          <button class="timeline-stop" data-target="chorreras" type="button">
+            <span class="timeline-stop-label">CHORRERAS</span>
+          </button>
+
+          <button class="timeline-stop" data-target="betania" type="button">
+            <span class="timeline-stop-label">BETANIA</span>
+          </button>
+
+          <button class="timeline-stop" data-target="concepcion" type="button">
+            <span class="timeline-stop-label">CONCEPCIÓN</span>
+          </button>
+
+          <button class="timeline-stop" data-target="sopas" type="button">
+            <span class="timeline-stop-label">LAS SOPAS</span>
+          </button>
+
+          <button class="timeline-stop" data-target="eventos" type="button">
+            <span class="timeline-stop-label">EVENTOS ESPECIALES</span>
+          </button>
+        </div>
+
+        <!-- PANEL CMPR -->
+        <article class="timeline-panel active" id="cmpr">
+          <div class="timeline-stage">
+            <div class="timeline-stage-text">
+              <h3 class="timeline-place">CMPR</h3>
+              <p class="timeline-date"><strong>CMPR, 21 de junio de 2025.</strong></p>
+              <p class="timeline-copy">
+                Los equipos de memoria y creación, junto con memorias territoriales,
+                dieron a conocer el objetivo de las iniciativas, resaltando su carácter
+                continuo y su configuración como proceso y no como simples actividades
+                separadas. Todo hace parte de un tejido de acciones que alimenta la
+                construcción de la Casa de la Memoria en Sumapaz.
+              </p>
+            </div>
+
+            <div class="timeline-stage-media media-single">
+              <img src="assets/img/CMPR_V1.webp" alt="CMPR" />
+            </div>
+          </div>
+        </article>
+
+        <!-- PANEL CHORRERAS -->
+        <article class="timeline-panel" id="chorreras">
+          <div class="timeline-stage">
+            <div class="timeline-stage-text">
+              <h3 class="timeline-place">CHORRERAS</h3>
+              <p class="timeline-date"><strong>Chorreras, 13 de julio de 2025.</strong></p>
+              <p class="timeline-copy">
+                La memoria colectiva no tiene dueño, su relación con los humanos es
+                amplia y plural y está en relación continua con los contextos. El análisis
+                gira en Sumapaz y su memoria. La ancestralidad, las diferentes etapas
+                de la violencia hasta llegar al Acuerdo de Paz, el incumplimiento del mismo,
+                la militarización excesiva que persiste y las diversas resistencias que el
+                territorio ha ofrecido.
+              </p>
+            </div>
+
+            <div class="timeline-stage-media media-carousel" data-carousel>
+              <button class="carousel-arrow prev" type="button" data-carousel-prev aria-label="Anterior">‹</button>
+
+              <div class="carousel-viewport">
+                <div class="carousel-track">
+                  <div class="carousel-slide active">
+                    <img src="assets/img/CHORRERAS_1.webp" alt="Chorreras 1" />
+                  </div>
+                  <div class="carousel-slide">
+                    <img src="assets/img/CHORRERAS_2_2.webp" alt="Chorreras 2" />
+                  </div>
+                </div>
+              </div>
+
+              <button class="carousel-arrow next" type="button" data-carousel-next aria-label="Siguiente">›</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- PANEL BETANIA -->
+        <article class="timeline-panel" id="betania">
+          <div class="timeline-stage">
+            <div class="timeline-stage-text">
+              <h3 class="timeline-place">BETANIA</h3>
+              <p class="timeline-date"><strong>Betania, 2 de agosto de 2025.</strong></p>
+              <p class="timeline-copy">
+                Con mapa y esfero en mano, la comunidad se dedicó a señalar y reflexionar
+                sobre las historias que el territorio guarda y las maneras en que se han
+                vivido distintos hechos relacionados con la defensa del territorio, las
+                prácticas ancestrales, el conflicto armado y los hitos históricos.
+              </p>
+            </div>
+
+            <div class="timeline-stage-media media-carousel" data-carousel>
+              <button class="carousel-arrow prev" type="button" data-carousel-prev aria-label="Anterior">‹</button>
+
+              <div class="carousel-viewport">
+                <div class="carousel-track">
+                  <div class="carousel-slide active">
+                    <img src="assets/img/BETANIA_1.webp" alt="Betania 1" />
+                  </div>
+                  <div class="carousel-slide">
+                    <img src="assets/img/BETANIA_2.webp" alt="Betania 2" />
+                  </div>
+                </div>
+              </div>
+
+              <button class="carousel-arrow next" type="button" data-carousel-next aria-label="Siguiente">›</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- PANEL CONCEPCIÓN -->
+        <article class="timeline-panel" id="concepcion">
+          <div class="timeline-stage">
+            <div class="timeline-stage-text">
+              <h3 class="timeline-place">CONCEPCIÓN</h3>
+              <p class="timeline-date"><strong>Concepción, 21 de septiembre de 2025.</strong></p>
+              <p class="timeline-copy">
+                Una vez definidos los puntos de memoria, se profundizó en la pregunta
+                sobre cómo narrarlos y qué formato utilizar para compartir esas historias
+                con la comunidad y con quienes visiten este espacio.
+              </p>
+            </div>
+
+            <div class="timeline-stage-media media-carousel" data-carousel>
+              <button class="carousel-arrow prev" type="button" data-carousel-prev aria-label="Anterior">‹</button>
+
+              <div class="carousel-viewport">
+                <div class="carousel-track">
+                  <div class="carousel-slide active">
+                    <img src="assets/img/CONCEPCION_1.webp" alt="Concepción 1" />
+                  </div>
+                  <div class="carousel-slide">
+                    <img src="assets/img/CONCEPCION_2.webp" alt="Concepción 2" />
+                  </div>
+                </div>
+              </div>
+
+              <button class="carousel-arrow next" type="button" data-carousel-next aria-label="Siguiente">›</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- PANEL LAS SOPAS -->
+        <article class="timeline-panel" id="sopas">
+          <div class="timeline-stage">
+            <div class="timeline-stage-text">
+              <h3 class="timeline-place">LAS SOPAS</h3>
+              <p class="timeline-date"><strong>Las Sopas, 28 de septiembre de 2025.</strong></p>
+              <p class="timeline-copy">
+                En este encuentro la comunidad se puso manos a la obra para crear
+                diferentes piezas en formatos como collage, video, textos y otras
+                expresiones que hacen visible la memoria del territorio.
+              </p>
+            </div>
+
+            <div class="timeline-stage-media media-single">
+              <img src="assets/img/LAS-SOPAS.webp" alt="Las Sopas" />
+            </div>
+          </div>
+        </article>
+
+        <!-- PANEL EVENTOS -->
+        <article class="timeline-panel" id="eventos">
+          <div class="timeline-stage">
+            <div class="timeline-stage-text">
+              <h3 class="timeline-place">CONMEMORACIÓN DÍA DE LAS VÍCTIMAS EN SUMAPAZ</h3>
+              <p class="timeline-date"><strong>30 de noviembre de 2025</strong></p>
+
+              <h3 class="timeline-place second-title">INAUGURACIÓN TRANSMEDIA CENTRO DE MEMORIA</h3>
+              <p class="timeline-date"><strong>0 de – de 2025</strong></p>
+            </div>
+
+            <div class="timeline-stage-media media-single">
+              <img src="assets/img/imagen-de-prueba-cuadrada-1200-1200.webp" alt="Eventos especiales" />
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- FRANJA DECORATIVA -->
+    <section class="section-divider-image">
+      <img src="assets/img/montanas-sumapaz-copia.webp" alt="Montañas de Sumapaz" />
+    </section>
+
+    <!-- MAPA -->
+<section class="map-section" id="mapa">
+  <div class="container map-layout">
+
+    <aside class="map-sidebar">
+      <div class="map-tabs map-tabs-vertical" id="memoryTabs"></div>
+    </aside>
+
+    <div class="map-main">
+      <div class="map-heading">
+        <h2 class="map-heading-title">
+          ¿QUÉ CUENTA EL
+          <span class="map-heading-highlight">TERRITORIO?</span>
+        </h2>
+      </div>
+
+      <div class="map-typing-wrap">
+        <p class="map-typing-text" id="typingText"></p>
+      </div>
+
+      <div class="map-content-row">
+        <div class="map-frame" id="mapCanvas">
+          <img
+            src="assets/img/mapa-supamaz_V1_5-copia.webp"
+            class="map-image"
+            id="mapImage"
+            alt="Mapa interactivo de Sumapaz"
+          />
+
+          <div class="marker-layer" id="markerLayer"></div>
+
+          <article class="map-point-card hidden" id="floatingCard">
+            <button
+              class="map-point-card-close"
+              id="floatingCardClose"
+              type="button"
+              aria-label="Cerrar"
+            >
+              ×
+            </button>
+
+            <h4 class="map-point-card-title" id="cardTitle"></h4>
+            <p class="map-point-card-place" id="cardPlace"></p>
+            <p class="map-point-card-text" id="cardText"></p>
+            <a
+              class="map-point-card-link"
+              id="cardLink"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Leer más
+            </a>
+          </article>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+    <!-- FOOTER VISUAL -->
+    <section class="footer-visual">
+      <img src="assets/img/footer_imagen-copia.webp" alt="Cierre visual Memoria Sumapaz" />
+    </section>
+
+  </main>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
