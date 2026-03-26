@@ -7,28 +7,49 @@
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-<main class="home-split">
-  <a href="somos/index.html" class="panel panel-left">
-    <div class="panel-bg" style="background-image: url('assets/somos-cover.jpg');"></div>
-    <div class="overlay"></div>
-    <div class="panel-content">
-      <span class="mini-label">Proyecto</span>
-      <h1>Somos<br>Sumapaz</h1>
-    </div>
-  </a>
+  <header class="topbar">
+    <div class="topbar-side"></div>
+    <div class="topbar-title">SUMAPAZ</div>
+    <div class="topbar-side"></div>
+  </header>
 
-  <a href="memoria/index.html" class="panel panel-right">
-    <div class="panel-bg" style="background-image: url('assets/memoria-cover.jpg');"></div>
-    <div class="overlay"></div>
-    <div class="panel-content">
-      <span class="mini-label">Proyecto</span>
-      <h1>Memoria<br>Sumapaz</h1>
-    </div>
-  </a>
+  <main class="home-split">
+    <!-- PANEL SOMOS -->
+    <section class="panel panel-left">
+      <div class="panel-bg panel-bg-somos"></div>
+      <div class="panel-overlay"></div>
 
-    <div class="center-logo">
-      <span>SUMAPAZ</span>
-    </div>
+      <div class="panel-inner">
+        <a href="somos/index.html" class="panel-logo-link panel-logo-link-somos" aria-label="Ir a Somos Sumapaz">
+          <img
+            src="assets/somos-sumapaz-logo.png"
+            alt="Proyecto Somos Sumapaz"
+            class="panel-logo"
+          />
+        </a>
+      </div>
+    </section>
+
+    <!-- PANEL MEMORIA -->
+    <section class="panel panel-right">
+      <div class="panel-bg panel-bg-memoria"></div>
+      <div class="panel-overlay"></div>
+
+      <div class="panel-inner">
+        <a href="memoria/index.html" class="panel-logo-link panel-logo-link-memoria" aria-label="Ir a Memoria Sumapaz">
+          <img
+            src="assets/memoria-sumapaz-logo.png"
+            alt="Proyecto Memoria Sumapaz"
+            class="panel-logo logo-default"
+          />
+          <img
+            src="assets/memoria-sumapaz-blanco.png"
+            alt="Proyecto Memoria Sumapaz"
+            class="panel-logo logo-hover"
+          />
+        </a>
+      </div>
+    </section>
   </main>
 
   <script src="js/app.js"></script>

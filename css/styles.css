@@ -1,117 +1,225 @@
+:root {
+  --topbar-bg: #f9edd8;
+  --green-dark: #3c5228;
+  --overlay-green: rgba(60, 82, 40, 0.70);
+  --shadow-soft: 0 4px 14px rgba(0, 0, 0, 0.14);
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   font-family: "Open Sans", Arial, sans-serif;
-  background: #111;
+  background: var(--green-dark);
 }
 
 body {
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
-.home-split {
+/* =========================
+   TOPBAR
+========================= */
+.topbar {
+  height: 66px;
+  background: var(--topbar-bg);
+  color: var(--green-dark);
+  display: grid;
+  grid-template-columns: 80px 1fr 80px;
+  align-items: center;
+  box-shadow: var(--shadow-soft);
   position: relative;
+  z-index: 30;
+}
+
+.topbar-side {
+  width: 80px;
+  height: 100%;
+}
+
+.topbar-title {
+  text-align: center;
+  font-size: clamp(2rem, 3vw, 3.2rem);
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: var(--green-dark);
+  line-height: 1;
+}
+
+/* =========================
+   HOME SPLIT
+========================= */
+.home-split {
   display: flex;
   width: 100%;
-  height: 100vh;
+  min-height: calc(100vh - 66px);
 }
 
 .panel {
   position: relative;
   flex: 1;
-  display: block;
+  min-height: calc(100vh - 66px);
   overflow: hidden;
-  text-decoration: none;
-  color: #fff;
+  cursor: default;
   transition: flex 0.5s ease;
+  background: var(--green-dark);
 }
 
-.panel:hover {
-  flex: 1.1;
+.panel:hover,
+.panel.active {
+  flex: 1.06;
 }
 
 .panel-bg {
   position: absolute;
   inset: 0;
   background-size: cover;
-  background-position: center;
+  background-repeat: no-repeat;
   transform: scale(1);
-  transition: transform 0.8s ease;
+  transition: transform 0.75s ease, filter 0.45s ease, opacity 0.45s ease;
+  z-index: 1;
 }
 
-.panel:hover .panel-bg {
-  transform: scale(1.05);
+/* Ajuste del encuadre */
+.panel-bg-somos {
+  background-image: url("../assets/somos-cover.jpg");
+  background-position: center 58%;
+  background-size: 118%;
 }
 
-.overlay {
+.panel-bg-memoria {
+  background-image: url("../assets/memoria-cover.jpg");
+  background-position: center 60%;
+  background-size: 118%;
+}
+
+.panel-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.72),
-    rgba(0, 0, 0, 0.20)
-  );
-}
-
-.panel::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 1px;
-  height: 100%;
-  background: rgba(255,255,255,0.15);
-}
-
-.panel-right::after {
-  display: none;
-}
-
-.panel-content {
-  position: absolute;
-  left: 60px;
-  bottom: 70px;
+  background: transparent;
+  transition: background 0.45s ease;
   z-index: 2;
 }
 
-.mini-label {
-  display: inline-block;
-  margin-bottom: 18px;
-  font-size: 12px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.75);
+.panel-inner {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
 }
 
-.panel-content h1 {
-  font-size: clamp(2.2rem, 5vw, 5rem);
-  line-height: 0.95;
-  font-weight: 300;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-}
-
-.center-logo {
+/* =========================
+   LOGOS
+========================= */
+.panel-logo-link {
   position: absolute;
-  top: 28px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  color: #fff;
-  font-size: 14px;
-  letter-spacing: 6px;
-  font-weight: 600;
-  text-transform: uppercase;
-  pointer-events: none;
+  display: inline-block;
+  text-decoration: none;
+  transform-origin: center center;
+  transition:
+    top 0.55s ease,
+    left 0.55s ease,
+    transform 0.55s ease,
+    width 0.55s ease;
+  z-index: 5;
 }
 
-@media (max-width: 900px) {
+.panel-logo {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition:
+    transform 0.45s ease,
+    opacity 0.35s ease,
+    filter 0.45s ease;
+  filter: drop-shadow(4px 6px 0 rgba(0, 0, 0, 0.30))
+          drop-shadow(0 6px 14px rgba(0, 0, 0, 0.18));
+}
+
+/* Posición inicial */
+.panel-left .panel-logo-link {
+  top: 36px;
+  left: 46px;
+  width: min(270px, 27vw);
+}
+
+.panel-right .panel-logo-link {
+  top: 34px;
+  left: 58px;
+  width: min(330px, 33vw);
+}
+
+/* Dos logos para memoria */
+.panel-logo-link-memoria {
+  position: absolute;
+}
+
+.panel-logo-link-memoria .panel-logo {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.panel-logo-link-memoria .logo-default {
+  opacity: 1;
+}
+
+.panel-logo-link-memoria .logo-hover {
+  opacity: 0;
+}
+
+/* Hover del panel */
+.panel:hover .panel-bg,
+.panel.active .panel-bg {
+  transform: scale(1.05);
+}
+
+.panel:hover .panel-overlay,
+.panel.active .panel-overlay {
+  background: var(--overlay-green);
+}
+
+/* Movimiento del logo hacia el centro + aumento */
+.panel-left:hover .panel-logo-link,
+.panel-left.active .panel-logo-link {
+  top: 14%;
+  left: 50%;
+  transform: translateX(-50%) scale(1.10);
+}
+
+.panel-right:hover .panel-logo-link,
+.panel-right.active .panel-logo-link {
+  top: 14%;
+  left: 50%;
+  transform: translateX(-50%) scale(1.10);
+}
+
+/* Aumentar un poco más la imagen del logo al pasar encima */
+.panel-logo-link:hover .panel-logo {
+  transform: scale(1.04);
+}
+
+/* Memoria cambia a logo blanco cuando entra overlay */
+.panel-right:hover .logo-default,
+.panel-right.active .logo-default {
+  opacity: 0;
+}
+
+.panel-right:hover .logo-hover,
+.panel-right.active .logo-hover {
+  opacity: 1;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 991px) {
   .home-split {
     flex-direction: column;
   }
@@ -120,22 +228,62 @@ body {
     min-height: 50vh;
   }
 
-  .panel::after {
-    display: none;
+  .panel:hover,
+  .panel.active {
+    flex: 1;
   }
 
-  .panel-content {
-    left: 30px;
-    bottom: 35px;
+  .panel-bg-somos,
+  .panel-bg-memoria {
+    background-size: cover;
+    background-position: center;
   }
 
-  .panel-content h1 {
-    font-size: clamp(2rem, 8vw, 3.5rem);
+  .panel-left .panel-logo-link,
+  .panel-right .panel-logo-link {
+    top: 28px;
+    left: 28px;
+    width: min(240px, 55vw);
+    transform: none;
   }
 
-  .center-logo {
-    top: 16px;
-    font-size: 12px;
-    letter-spacing: 4px;
+  .panel-left:hover .panel-logo-link,
+  .panel-left.active .panel-logo-link,
+  .panel-right:hover .panel-logo-link,
+  .panel-right.active .panel-logo-link {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1.06);
+  }
+
+  .topbar-title {
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .topbar {
+    grid-template-columns: 30px 1fr 30px;
+    height: 60px;
+  }
+
+  .home-split {
+    min-height: calc(100vh - 60px);
+  }
+
+  .panel {
+    min-height: calc(50vh - 30px);
+  }
+
+  .panel-left .panel-logo-link,
+  .panel-right .panel-logo-link {
+    top: 20px;
+    left: 18px;
+    width: min(190px, 62vw);
+  }
+
+  .topbar-title {
+    font-size: 1.9rem;
+    letter-spacing: 1px;
   }
 }
