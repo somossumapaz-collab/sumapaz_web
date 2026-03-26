@@ -1,8 +1,9 @@
 :root {
   --topbar-bg: #f9edd8;
   --green-dark: #3c5228;
-  --overlay-green: rgba(60, 82, 40, 0.70);
-  --shadow-soft: 0 4px 14px rgba(0, 0, 0, 0.14);
+  --overlay-green: rgba(60, 82, 40, 0.45);
+  --overlay-base: rgba(0, 0, 0, 0.08);
+  --shadow-soft: 0 6px 18px rgba(0, 0, 0, 0.12);
 }
 
 * {
@@ -27,91 +28,102 @@ body {
    TOPBAR
 ========================= */
 .topbar {
-  height: 66px;
+  height: 76px;
   background: var(--topbar-bg);
-  color: var(--green-dark);
-  display: grid;
-  grid-template-columns: 80px 1fr 80px;
+  display: flex;
   align-items: center;
+  justify-content: center;
   box-shadow: var(--shadow-soft);
   position: relative;
-  z-index: 30;
-}
-
-.topbar-side {
-  width: 80px;
-  height: 100%;
+  z-index: 50;
 }
 
 .topbar-title {
-  text-align: center;
-  font-size: clamp(2rem, 3vw, 3.2rem);
-  font-weight: 700;
-  letter-spacing: 1.2px;
   color: var(--green-dark);
+  font-size: clamp(2.2rem, 3.1vw, 3.6rem);
+  font-weight: 700;
+  letter-spacing: 1.5px;
   line-height: 1;
 }
 
 /* =========================
-   HOME SPLIT
+   LAYOUT
 ========================= */
 .home-split {
   display: flex;
   width: 100%;
-  min-height: calc(100vh - 66px);
+  min-height: calc(100vh - 76px);
 }
 
 .panel {
   position: relative;
   flex: 1;
-  min-height: calc(100vh - 66px);
+  min-height: calc(100vh - 76px);
   overflow: hidden;
-  cursor: default;
-  transition: flex 0.5s ease;
-  background: var(--green-dark);
+  transition: flex 0.55s ease;
+  isolation: isolate;
 }
 
 .panel:hover,
 .panel.active {
-  flex: 1.06;
+  flex: 1.05;
 }
 
 .panel-bg {
   position: absolute;
   inset: 0;
-  background-size: cover;
   background-repeat: no-repeat;
+  background-size: cover;
   transform: scale(1);
-  transition: transform 0.75s ease, filter 0.45s ease, opacity 0.45s ease;
+  transition: transform 0.8s ease, filter 0.5s ease;
   z-index: 1;
 }
 
-/* Ajuste del encuadre */
 .panel-bg-somos {
   background-image: url("../assets/somos-cover.jpg");
-  background-position: center 58%;
-  background-size: 118%;
+  background-position: center center;
+  background-size: cover;
 }
 
 .panel-bg-memoria {
   background-image: url("../assets/memoria-cover.jpg");
-  background-position: center 60%;
-  background-size: 118%;
+  background-position: center center;
+  background-size: cover;
 }
 
+/* Capa base más suave */
 .panel-overlay {
   position: absolute;
   inset: 0;
-  background: transparent;
-  transition: background 0.45s ease;
   z-index: 2;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(60, 82, 40, 0.10) 0%,
+      rgba(60, 82, 40, 0.04) 22%,
+      rgba(0, 0, 0, 0.00) 45%,
+      rgba(0, 0, 0, 0.05) 100%
+    );
+  transition: background 0.45s ease;
 }
 
-.panel-inner {
+.panel-content {
   position: relative;
   z-index: 3;
   width: 100%;
   height: 100%;
+}
+
+/* Línea divisoria suave */
+.panel-left::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 1px;
+  height: 100%;
+  background: rgba(249, 237, 216, 0.28);
+  z-index: 4;
 }
 
 /* =========================
@@ -119,6 +131,8 @@ body {
 ========================= */
 .panel-logo-link {
   position: absolute;
+  top: 56px;
+  left: 48px;
   display: inline-block;
   text-decoration: none;
   transform-origin: center center;
@@ -127,7 +141,15 @@ body {
     left 0.55s ease,
     transform 0.55s ease,
     width 0.55s ease;
-  z-index: 5;
+  z-index: 6;
+}
+
+.panel-left .panel-logo-link {
+  width: min(255px, 25vw);
+}
+
+.panel-right .panel-logo-link {
+  width: min(330px, 32vw);
 }
 
 .panel-logo {
@@ -136,26 +158,13 @@ body {
   height: auto;
   transition:
     transform 0.45s ease,
-    opacity 0.35s ease,
-    filter 0.45s ease;
-  filter: drop-shadow(4px 6px 0 rgba(0, 0, 0, 0.30))
-          drop-shadow(0 6px 14px rgba(0, 0, 0, 0.18));
+    opacity 0.3s ease,
+    filter 0.4s ease;
+  filter:
+    drop-shadow(0 10px 18px rgba(0, 0, 0, 0.18))
+    drop-shadow(0 2px 4px rgba(0, 0, 0, 0.10));
 }
 
-/* Posición inicial */
-.panel-left .panel-logo-link {
-  top: 36px;
-  left: 46px;
-  width: min(270px, 27vw);
-}
-
-.panel-right .panel-logo-link {
-  top: 34px;
-  left: 58px;
-  width: min(330px, 33vw);
-}
-
-/* Dos logos para memoria */
 .panel-logo-link-memoria {
   position: absolute;
 }
@@ -166,46 +175,52 @@ body {
   left: 0;
 }
 
-.panel-logo-link-memoria .logo-default {
+.logo-default {
   opacity: 1;
 }
 
-.panel-logo-link-memoria .logo-hover {
+.logo-hover {
   opacity: 0;
 }
 
-/* Hover del panel */
+/* =========================
+   HOVER
+========================= */
 .panel:hover .panel-bg,
 .panel.active .panel-bg {
-  transform: scale(1.05);
+  transform: scale(1.06);
 }
 
 .panel:hover .panel-overlay,
 .panel.active .panel-overlay {
-  background: var(--overlay-green);
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(60, 82, 40, 0.52) 0%,
+      rgba(60, 82, 40, 0.34) 30%,
+      rgba(60, 82, 40, 0.18) 55%,
+      rgba(60, 82, 40, 0.30) 100%
+    );
 }
 
-/* Movimiento del logo hacia el centro + aumento */
 .panel-left:hover .panel-logo-link,
 .panel-left.active .panel-logo-link {
-  top: 14%;
+  top: 72px;
   left: 50%;
-  transform: translateX(-50%) scale(1.10);
+  transform: translateX(-50%) scale(1.08);
 }
 
 .panel-right:hover .panel-logo-link,
 .panel-right.active .panel-logo-link {
-  top: 14%;
+  top: 72px;
   left: 50%;
-  transform: translateX(-50%) scale(1.10);
+  transform: translateX(-50%) scale(1.08);
 }
 
-/* Aumentar un poco más la imagen del logo al pasar encima */
 .panel-logo-link:hover .panel-logo {
-  transform: scale(1.04);
+  transform: scale(1.03);
 }
 
-/* Memoria cambia a logo blanco cuando entra overlay */
 .panel-right:hover .logo-default,
 .panel-right.active .logo-default {
   opacity: 0;
@@ -220,8 +235,13 @@ body {
    RESPONSIVE
 ========================= */
 @media (max-width: 991px) {
+  .topbar {
+    height: 68px;
+  }
+
   .home-split {
     flex-direction: column;
+    min-height: calc(100vh - 68px);
   }
 
   .panel {
@@ -233,57 +253,49 @@ body {
     flex: 1;
   }
 
-  .panel-bg-somos,
-  .panel-bg-memoria {
-    background-size: cover;
-    background-position: center;
+  .panel-left::after {
+    display: none;
   }
 
   .panel-left .panel-logo-link,
   .panel-right .panel-logo-link {
-    top: 28px;
+    top: 34px;
     left: 28px;
-    width: min(240px, 55vw);
-    transform: none;
+    width: min(240px, 54vw);
   }
 
   .panel-left:hover .panel-logo-link,
   .panel-left.active .panel-logo-link,
   .panel-right:hover .panel-logo-link,
   .panel-right.active .panel-logo-link {
-    top: 50%;
+    top: 44px;
     left: 50%;
-    transform: translate(-50%, -50%) scale(1.06);
-  }
-
-  .topbar-title {
-    font-size: 2.2rem;
+    transform: translateX(-50%) scale(1.05);
   }
 }
 
 @media (max-width: 640px) {
   .topbar {
-    grid-template-columns: 30px 1fr 30px;
-    height: 60px;
+    height: 62px;
+  }
+
+  .topbar-title {
+    font-size: 1.95rem;
+    letter-spacing: 1px;
   }
 
   .home-split {
-    min-height: calc(100vh - 60px);
+    min-height: calc(100vh - 62px);
   }
 
   .panel {
-    min-height: calc(50vh - 30px);
+    min-height: calc(50vh - 31px);
   }
 
   .panel-left .panel-logo-link,
   .panel-right .panel-logo-link {
-    top: 20px;
+    top: 24px;
     left: 18px;
     width: min(190px, 62vw);
-  }
-
-  .topbar-title {
-    font-size: 1.9rem;
-    letter-spacing: 1px;
   }
 }

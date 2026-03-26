@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const panels = document.querySelectorAll(".panel");
+  const wrapper = document.querySelector(".home-split");
 
   panels.forEach((panel) => {
     panel.addEventListener("mouseenter", () => {
@@ -8,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  document.querySelector(".home-split")?.addEventListener("mouseleave", () => {
+  wrapper?.addEventListener("mouseleave", () => {
     panels.forEach((p) => p.classList.remove("active"));
   });
 });
