@@ -3,8 +3,20 @@ document.addEventListener("DOMContentLoaded", () => {
   const menuToggle = document.getElementById("menuToggle");
   const sideMenu = document.getElementById("sideMenu");
 
-  document.body.classList.remove("fade-out");
+  const resetHomeState = () => {
+    panels.forEach((panel) => {
+      panel.classList.remove("active");
+      panel.blur();
+    });
 
+    if (sideMenu) sideMenu.classList.remove("open");
+    if (menuToggle) menuToggle.classList.remove("active");
+  };
+
+  // Estado limpio al cargar
+  resetHomeState();
+
+  // Hover por panel
   panels.forEach((panel) => {
     panel.addEventListener("mouseenter", () => {
       panels.forEach((p) => p.classList.remove("active"));
@@ -16,22 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  panels.forEach((panel) => {
-    panel.addEventListener("click", function (e) {
-      const href = this.getAttribute("href");
-
-      if (!href || href.startsWith("http")) return;
-
-      e.preventDefault();
-
-      document.body.classList.add("fade-out");
-
-      setTimeout(() => {
-        window.location.href = href;
-      }, 250);
-    });
-  });
-
+  // Menú lateral
   if (menuToggle && sideMenu) {
     menuToggle.addEventListener("click", (event) => {
       event.stopPropagation();
@@ -50,6 +47,17 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+// Corrige Firefox al volver con "Atrás"
 window.addEventListener("pageshow", () => {
-  document.body.classList.remove("fade-out");
+  const panels = document.querySelectorAll(".panel");
+  const menuToggle = document.getElementById("menuToggle");
+  const sideMenu = document.getElementById("sideMenu");
+
+  panels.forEach((panel) => {
+    panel.classList.remove("active");
+    panel.blur();
+  });
+
+  if (sideMenu) sideMenu.classList.remove("open");
+  if (menuToggle) menuToggle.classList.remove("active");
 });

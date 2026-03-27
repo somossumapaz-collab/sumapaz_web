@@ -24,11 +24,6 @@ body {
 
 body {
   overflow-x: hidden;
-  transition: opacity 0.3s ease;
-}
-
-body.fade-out {
-  opacity: 0;
 }
 
 /* =========================
@@ -354,6 +349,14 @@ body.fade-out {
 .panel-right.active .logo-hover,
 .panel-right:hover .logo-hover {
   opacity: 1;
+}
+.panel {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.panel:focus,
+.panel:focus-visible {
+  outline: none;
 }
 
 /* =========================
