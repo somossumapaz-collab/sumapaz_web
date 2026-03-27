@@ -8,16 +8,41 @@
 </head>
 <body>
   <header class="topbar">
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
     <div class="topbar-title">SUMAPAZ</div>
   </header>
 
-  <main class="home-split">
+  <aside class="side-menu" id="sideMenu">
+    <nav class="side-menu-nav">
+      <a href="somos/index.html" class="menu-item">
+        <span class="menu-text">SOMOS SUMAPAZ</span>
+        <span class="menu-pill">Ir</span>
+      </a>
+
+      <a href="memoria/index.html" class="menu-item">
+        <span class="menu-text">MEMORIA SUMAPAZ</span>
+        <span class="menu-pill">Ir</span>
+      </a>
+
+      <a href="memoria/index.html" class="menu-item">
+        <span class="menu-text">HOJAS DE VIDA</span>
+        <span class="menu-pill">Ir</span>
+      </a>
+    </nav>
+  </aside>
+
+  <main class="home-split" id="homeSplit">
     <section class="panel panel-left">
       <div class="panel-bg panel-bg-somos"></div>
       <div class="panel-overlay"></div>
 
       <div class="panel-content">
-        <a href="somos/index.html" class="panel-logo-link" aria-label="Ir a Somos Sumapaz">
+        <a href="somos/index.html" class="panel-logo-link panel-logo-link-somos" aria-label="Ir a Somos Sumapaz">
           <img
             src="assets/somos-sumapaz-logo.png"
             alt="Proyecto Somos Sumapaz"
