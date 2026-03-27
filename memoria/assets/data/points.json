@@ -8,8 +8,8 @@
       {
         "title": "La Organización Campesina",
         "place": "Lugar: Estatua del Campesino, Santa Rosa",
-        "description": "El Sumapaz es un referente nacional en la lucha campesina por la tierra y la defensa del territorio. Este punto permite resaltar la organización comunitaria y su papel histórico en la región.",
-        "x": 70,
+        "description": "El Sumapaz es un referente nacional en la lucha campesina por la tierra y la defensa del territorio. Este punto resalta la organización comunitaria y su papel histórico en la región.",
+        "x": 77,
         "y": 18,
         "image": "assets/img/CMPR_V1.webp",
         "gallery": [
@@ -20,10 +20,10 @@
       },
       {
         "title": "Centro de Conectividad Campesina",
-        "place": "Primer centro de conectividad, Betania",
-        "description": "Las comunicaciones han sido un reto histórico para el territorio por sus distancias y condiciones geográficas. Este punto puede mostrar cómo la conectividad también hace parte de la memoria del territorio.",
-        "x": 80,
-        "y": 17,
+        "place": "Lugar: Betania",
+        "description": "Las comunicaciones han sido un reto histórico para el territorio por sus distancias y condiciones geográficas. Este punto muestra cómo la conectividad también hace parte de la memoria del territorio.",
+        "x": 89,
+        "y": 19,
         "image": "assets/img/BETANIA_1.webp",
         "gallery": [
           "assets/img/BETANIA_1.webp",
@@ -35,8 +35,8 @@
         "title": "Troncal Bolivariana",
         "place": "Lugar: Tramo de la troncal",
         "description": "La construcción de la Troncal Bolivariana marcó transformaciones en la movilidad y en la relación de Sumapaz con otros territorios.",
-        "x": 41,
-        "y": 55,
+        "x": 53,
+        "y": 40,
         "image": "assets/img/CHORRERAS_1.webp",
         "gallery": [
           "assets/img/CHORRERAS_1.webp",
@@ -46,9 +46,9 @@
       },
       {
         "title": "Escuelas en Sumapaz",
-        "place": "Lugar: Colegio Erasmo Valencia, Vereda Vegas",
+        "place": "Lugar: Colegio Erasmo Valencia, vereda Vegas",
         "description": "La educación cobró fuerza gracias a la organización comunitaria y a los procesos históricos que dignificaron la vida campesina en el territorio.",
-        "x": 54,
+        "x": 46,
         "y": 50,
         "image": "assets/img/CONCEPCION_2.webp",
         "gallery": [
@@ -62,15 +62,15 @@
   {
     "id": "practicas-ancestrales",
     "label": "PRÁCTICAS ANCESTRALES",
-    "intro": "Las prácticas ancestrales revelan la relación cultural, espiritual y productiva con el territorio, fortaleciendo la identidad colectiva y el reconocimiento de saberes heredados.",
-    "mapImage": "assets/img/CARTOGRAFIAS-SUMAPAZ-practicas-ancestrales-copia.webp",
+    "intro": "Son los saberes, costumbres y formas de vida que nos dejaron quienes habitaron el Sumapaz antes que nosotros y que hoy siguen siendo brújula y guía. Reconocemos como memoria viva la relación con la tierra y el agua, el uso de plantas medicinales, las historias de los abuelos y abuelas alrededor del fuego, los caminos abiertos por nuestros ancestros y la conexión profunda que nos une a este territorio y nos impulsa a cuidarlo.",
+    "mapImage": "assets/img/MAPA.png",
     "points": [
       {
         "title": "La partería",
         "place": "Lugar: Laguna de Chisacá",
-        "description": "Siwa, la laguna, es el vientre de la Madre y origen de la humanidad. Este punto puede representar la vida, el cuidado y los saberes ancestrales en Sumapaz.",
-        "x": 32,
-        "y": 70,
+        "description": "Siwa, la laguna, es el vientre de la Madre y origen de la humanidad. Este punto representa la vida, el cuidado y los saberes ancestrales en Sumapaz.",
+        "x": 75,
+        "y": 9,
         "image": "assets/img/CONCEPCION_1.webp",
         "gallery": [
           "assets/img/CONCEPCION_1.webp",
@@ -80,10 +80,10 @@
       },
       {
         "title": "Artes y oficios",
-        "place": "La huerta El Vuelo del Colibrí, Familia Poveda Romero. Vereda San Juan",
+        "place": "Lugar: Huerta El Vuelo del Colibrí, familia Poveda Romero, vereda San Juan",
         "description": "En las artes y oficios está la vida misma del campesinado, sus raíces, sus formas de producir y su relación cotidiana con el territorio.",
         "x": 40,
-        "y": 58,
+        "y": 48,
         "image": "assets/img/LAS-SOPAS.webp",
         "gallery": [
           "assets/img/LAS-SOPAS.webp",
@@ -92,11 +92,24 @@
         "link": "https://memoria.donegroup.co/"
       },
       {
+        "title": "Caminos históricos y ancestrales",
+        "place": "Lugar: Camino Cabrera – San Juangar",
+        "description": "Una basta y compleja red de caminos han permitido la comunicación entre diversas...",
+        "x": 27,
+        "y": 58,
+        "image": "assets/img/CONCEPCION_1.webp",
+        "gallery": [
+          "assets/img/CONCEPCION_1.webp",
+          "assets/img/CONCEPCION_2.webp"
+        ],
+        "link": "https://memoria.donegroup.co/"
+      },
+      {
         "title": "Poblamiento ancestral",
-        "place": "Territorio Mhuyska Chibcha campesino los Caquezasa",
+        "place": "Lugar: Territorio Mhuyska Chibcha campesino Los Caqueza",
         "description": "Lugar de recomposición de cultura, memoria y pensamiento ancestral que da profundidad histórica al territorio de Sumapaz.",
-        "x": 72,
-        "y": 33,
+        "x": 78,
+        "y": 32,
         "image": "assets/img/LAS-SOPAS.webp",
         "gallery": [
           "assets/img/LAS-SOPAS.webp"
@@ -108,12 +121,12 @@
   {
     "id": "defensa-del-territorio",
     "label": "DEFENSA DEL TERRITORIO",
-    "intro": "La defensa del territorio reúne experiencias de organización comunitaria, resistencia campesina y protección de la vida, la tierra y la memoria en Sumapaz.",
-    "mapImage": "assets/img/CARTOGRAFIAS-SUMAPAZ-defenza-del-territorio-copia.webp",
+    "intro": "La defensa del territorio son las acciones que hemos forjado como comunidad para cuidar, salvaguardar y habitar el territorio de manera digna. Luchamos por la vida desde la pedagogía, el cuidado ambiental, las resistencias y la organización. Defendemos nuestra herencia paramuna frente a la desigualdad y la violencia con semilla, palabra y colectividad. La defensa del territorio es nuestra forma de sembrar paz.",
+    "mapImage": "assets/img/MAPA.png",
     "points": [
       {
         "title": "Cátedra pedagógica Sumapaceña",
-        "place": "Colegio Jaime Garzón, Auras",
+        "place": "Lugar: Colegio Jaime Garzón, Las Auras",
         "description": "Desde las escuelas de Sumapaz, maestras, maestros y comunidades han impulsado procesos pedagógicos ligados a la memoria, la identidad y el territorio.",
         "x": 74,
         "y": 26,
@@ -126,7 +139,7 @@
       },
       {
         "title": "Zona de Reserva Campesina",
-        "place": "Quebrada Honda",
+        "place": "Lugar: Quebrada Honda",
         "description": "Tras años de articulación comunitaria, organización social y presión política, este punto simboliza la defensa colectiva del territorio campesino.",
         "x": 63,
         "y": 18,
@@ -139,8 +152,8 @@
       },
       {
         "title": "Plan de Manejo Ambiental y Productivo de la Cuenca de Río Blanco",
-        "place": "Nazareth",
-        "description": "Este plan es parte de los esfuerzos de cuidado del agua, la producción y la defensa del equilibrio ambiental en Sumapaz.",
+        "place": "Lugar: Nazareth",
+        "description": "Este plan hace parte de los esfuerzos de cuidado del agua, la producción y la defensa del equilibrio ambiental en Sumapaz.",
         "x": 79,
         "y": 30,
         "image": "assets/img/BETANIA_1.webp",
@@ -155,12 +168,12 @@
   {
     "id": "conflicto-armado",
     "label": "CONFLICTO ARMADO",
-    "intro": "Esta sección recoge memorias del conflicto armado, sus impactos en la población y los procesos de dignificación, resistencia y no olvido construidos por la comunidad.",
-    "mapImage": "assets/img/CARTOGRAFIAS-SUMAPAZ-defenza-del-territorio-copia.webp",
+    "intro": "La defensa del territorio son las acciones que hemos forjado como comunidad para cuidar, salvaguardar y habitar el territorio de manera digna. Luchamos por la vida desde la pedagogía, el cuidado ambiental, las resistencias y la organización. Defendemos nuestra herencia paramuna frente a la desigualdad y la violencia con semilla, palabra y colectividad. La defensa del territorio es nuestra forma de sembrar paz.",
+    "mapImage": "assets/img/MAPA.png",
     "points": [
       {
         "title": "Toma de Casa Verde",
-        "place": "San José",
+        "place": "Lugar: San José",
         "description": "El 9 de diciembre de 1990 marca una nueva etapa de violencia en Sumapaz. Este punto permite narrar una memoria clave del conflicto armado en el territorio.",
         "x": 30,
         "y": 83,
@@ -173,8 +186,8 @@
       },
       {
         "title": "Reclutamiento por parte de actores armados",
-        "place": "Vereda Los Ríos, Nazareth",
-        "description": "Este fenómeno es una práctica sistemática del conflicto que dejó afectaciones profundas en la comunidad y en las familias de Sumapaz.",
+        "place": "Lugar: Vereda Los Ríos, Nazareth",
+        "description": "Este fenómeno fue una práctica sistemática del conflicto y dejó afectaciones profundas en la comunidad y en las familias de Sumapaz.",
         "x": 89,
         "y": 37,
         "image": "assets/img/CONCEPCION_2.webp",
@@ -185,8 +198,8 @@
         "link": "https://memoria.donegroup.co/"
       },
       {
-        "title": "Muerte de Jóvenes “Falsos Positivos”",
-        "place": "Vereda El Capitolio",
+        "title": "Muerte de jóvenes “falsos positivos”",
+        "place": "Lugar: Vereda El Capitolio",
         "description": "Este punto visibiliza hechos graves del conflicto y ayuda a sostener una memoria que no debe quedar en el olvido.",
         "x": 29,
         "y": 47,

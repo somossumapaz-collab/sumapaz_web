@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initHeroFixedScroll();
   initTimeline();
   initCarousels();
+  initMarqueeCarousels();
   initMemoryMap();
 });
 
@@ -17,11 +18,7 @@ function initHeader() {
   if (!header) return;
 
   const onScroll = () => {
-    if (window.scrollY > 30) {
-      header.classList.add("scrolled");
-    } else {
-      header.classList.remove("scrolled");
-    }
+    header.classList.toggle("scrolled", window.scrollY > 30);
   };
 
   onScroll();
@@ -49,7 +46,7 @@ function initHeroFixedScroll() {
 
   if (!hero || !heroContent) return;
 
-  function updateHeroScroll() {
+  const updateHeroScroll = () => {
     const maxScroll = hero.offsetHeight;
     const scroll = Math.min(window.scrollY, maxScroll);
     const progress = Math.max(0, Math.min(1, scroll / maxScroll));
@@ -60,30 +57,7 @@ function initHeroFixedScroll() {
 
     heroContent.style.transform = `translateY(-${translateY}px) scale(${scale})`;
     heroContent.style.opacity = `${opacity}`;
-  }
-
-  updateHeroScroll();
-  window.addEventListener("scroll", updateHeroScroll, { passive: true });
-}
-
-function initHeroCredits() {
-  const hero = document.querySelector(".hero-sticky");
-  const heroContent = document.querySelector(".hero-sticky-content");
-
-  if (!hero || !heroContent) return;
-
-  function updateHeroScroll() {
-    const rect = hero.getBoundingClientRect();
-    const heroHeight = hero.offsetHeight;
-    const progress = Math.min(Math.max(-rect.top / heroHeight, 0), 1);
-
-    const translateY = progress * 180;
-    const opacity = 1 - progress * 0.9;
-    const scale = 1 - progress * 0.08;
-
-    heroContent.style.transform = `translateY(-${translateY}px) scale(${scale})`;
-    heroContent.style.opacity = opacity;
-  }
+  };
 
   updateHeroScroll();
   window.addEventListener("scroll", updateHeroScroll, { passive: true });
@@ -94,17 +68,29 @@ function initHeroCredits() {
 ========================= */
 function initTimeline() {
   const timelineHeader = document.querySelector(".timeline-header");
-  const buttons = document.querySelectorAll(".timeline-stop");
-  const panels = document.querySelectorAll(".timeline-panel");
+  const buttons = Array.from(document.querySelectorAll(".timeline-stop"));
+  const panels = Array.from(document.querySelectorAll(".timeline-panel"));
 
-  if (!buttons.length || !panels.length || !timelineHeader) return;
+  if (!timelineHeader || !buttons.length || !panels.length) return;
 
-  updateTimelineProgress();
+  const updateTimelineProgress = (forcedIndex = null) => {
+    const activeIndex =
+      forcedIndex !== null
+        ? forcedIndex
+        : buttons.findIndex((btn) => btn.classList.contains("active"));
+
+    if (activeIndex < 0) return;
+
+    const percent =
+      buttons.length === 1 ? 0 : (activeIndex / (buttons.length - 1)) * 96;
+
+    timelineHeader.style.setProperty("--timeline-progress", `${percent}%`);
+  };
 
   buttons.forEach((button, index) => {
     button.addEventListener("click", () => {
-      const target = button.dataset.target;
-      const targetPanel = document.getElementById(target);
+      const targetId = button.dataset.target;
+      const targetPanel = document.getElementById(targetId);
 
       buttons.forEach((btn) => btn.classList.remove("active"));
       panels.forEach((panel) => panel.classList.remove("active"));
@@ -113,30 +99,16 @@ function initTimeline() {
 
       if (targetPanel) {
         targetPanel.classList.add("active");
+        resetCarouselsInside(targetPanel);
+        restartMarqueesInside(targetPanel);
       }
 
       updateTimelineProgress(index);
-      resetCarouselsInside(targetPanel);
     });
   });
 
-  window.addEventListener("resize", () => {
-    updateTimelineProgress();
-  });
-
-  function updateTimelineProgress(forcedIndex = null) {
-    const activeIndex =
-      forcedIndex !== null
-        ? forcedIndex
-        : Array.from(buttons).findIndex((btn) => btn.classList.contains("active"));
-
-    if (activeIndex < 0) return;
-
-    const percent =
-      buttons.length === 1 ? 0 : (activeIndex / (buttons.length - 1)) * 96;
-
-    timelineHeader.style.setProperty("--timeline-progress", `${percent}%`);
-  }
+  window.addEventListener("resize", () => updateTimelineProgress());
+  updateTimelineProgress();
 }
 
 function resetCarouselsInside(panel) {
@@ -149,8 +121,19 @@ function resetCarouselsInside(panel) {
   });
 }
 
+function restartMarqueesInside(panel) {
+  if (!panel) return;
+
+  const tracks = panel.querySelectorAll(".media-carousel-marquee .marquee-track");
+  tracks.forEach((track) => {
+    track.style.animation = "none";
+    void track.offsetWidth;
+    track.style.animation = "";
+  });
+}
+
 /* =========================
-   CARRUSELES
+   CARRUSEL NORMAL
 ========================= */
 function initCarousels() {
   const carousels = document.querySelectorAll("[data-carousel]");
@@ -167,6 +150,26 @@ function initCarousels() {
 
     let autoPlay = null;
     const intervalMs = 4500;
+
+    const startAutoPlay = () => {
+      if (slides.length <= 1) return;
+      stopAutoPlay();
+      autoPlay = setInterval(() => {
+        goToNext(carousel, slides.length);
+      }, intervalMs);
+    };
+
+    const stopAutoPlay = () => {
+      if (autoPlay) {
+        clearInterval(autoPlay);
+        autoPlay = null;
+      }
+    };
+
+    const restartAutoPlay = () => {
+      stopAutoPlay();
+      startAutoPlay();
+    };
 
     prevBtn?.addEventListener("click", () => {
       goToPrev(carousel, slides.length);
@@ -188,26 +191,6 @@ function initCarousels() {
     }
 
     updateCarousel(carousel);
-
-    function startAutoPlay() {
-      if (slides.length <= 1) return;
-      stopAutoPlay();
-      autoPlay = setInterval(() => {
-        goToNext(carousel, slides.length);
-      }, intervalMs);
-    }
-
-    function stopAutoPlay() {
-      if (autoPlay) {
-        clearInterval(autoPlay);
-        autoPlay = null;
-      }
-    }
-
-    function restartAutoPlay() {
-      stopAutoPlay();
-      startAutoPlay();
-    }
   });
 }
 
@@ -240,272 +223,419 @@ function updateCarousel(carousel) {
 }
 
 /* =========================
-   MAPA DE MEMORIA DINÁMICO
+   CARRUSEL INFINITO / MARQUEE
 ========================= */
-function initMemoryMap() {
-  const tabsContainer = document.getElementById("memoryTabs");
-  const markerLayer = document.getElementById("markerLayer");
-  const sectionIntro = document.getElementById("sectionIntro");
-  const mapImage = document.getElementById("mapImage");
-  const mapCanvas = document.getElementById("mapCanvas");
+function initMarqueeCarousels() {
+  const marquees = Array.from(document.querySelectorAll("[data-carousel-marquee]"));
+  if (!marquees.length) return;
 
-  const floatingCard = document.getElementById("floatingCard");
-  const floatingCardClose = document.getElementById("floatingCardClose");
-  const cardTitle = document.getElementById("cardTitle");
-  const cardPlace = document.getElementById("cardPlace");
-  const cardText = document.getElementById("cardText");
-  const cardLink = document.getElementById("cardLink");
-  const typingText = document.getElementById("typingText");
+  const setupMarquee = (marquee) => {
+    const viewport = marquee.querySelector(".carousel-viewport");
+    const track = marquee.querySelector(".marquee-track");
+    if (!viewport || !track) return;
+
+    if (!track.dataset.originalMarkup) {
+      track.dataset.originalMarkup = track.innerHTML;
+    }
+
+    // Restaurar contenido original antes de recalcular
+    track.innerHTML = track.dataset.originalMarkup;
+    track.style.animation = "none";
+    track.style.removeProperty("--marquee-distance");
+    track.style.removeProperty("--marquee-duration");
+
+    const originalSlides = Array.from(track.children);
+    if (!originalSlides.length) return;
+
+    const gap = parseFloat(getComputedStyle(track).gap || "0");
+
+    const measureOriginalWidth = () => {
+      const slides = Array.from(track.children).slice(0, originalSlides.length);
+      return slides.reduce((total, slide, index) => {
+        const width = slide.getBoundingClientRect().width;
+        return total + width + (index < slides.length - 1 ? gap : 0);
+      }, 0);
+    };
+
+    const finalize = () => {
+      const viewportWidth = viewport.getBoundingClientRect().width;
+      let originalWidth = measureOriginalWidth();
+
+      // Si todavía no hay medidas válidas, reintentar un frame después
+      if (!viewportWidth || !originalWidth) {
+        requestAnimationFrame(() => setupMarquee(marquee));
+        return;
+      }
+
+      // Duplicar suficientes veces para evitar huecos
+      while (track.scrollWidth < viewportWidth + originalWidth * 2) {
+        originalSlides.forEach((slide) => {
+          const clone = slide.cloneNode(true);
+          clone.setAttribute("aria-hidden", "true");
+          track.appendChild(clone);
+        });
+      }
+
+      originalWidth = measureOriginalWidth();
+
+      track.style.setProperty("--marquee-distance", `${originalWidth + gap}px`);
+      track.style.setProperty("--marquee-duration", `${Math.max(20, originalWidth / 30)}s`);
+
+      // Reiniciar animación
+      requestAnimationFrame(() => {
+        track.style.animation = "";
+      });
+    };
+
+    const images = Array.from(track.querySelectorAll("img"));
+    if (!images.length) {
+      finalize();
+      return;
+    }
+
+    let loaded = 0;
+    const done = () => {
+      loaded += 1;
+      if (loaded === images.length) {
+        finalize();
+      }
+    };
+
+    images.forEach((img) => {
+      if (img.complete) {
+        done();
+      } else {
+        img.addEventListener("load", done, { once: true });
+        img.addEventListener("error", done, { once: true });
+      }
+    });
+  };
+
+  const initAll = () => {
+    marquees.forEach(setupMarquee);
+  };
+
+  initAll();
+
+  let resizeTimer = null;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(initAll, 180);
+  });
+
+  // Recalcular cuando cambias de panel del timeline
+  document.querySelectorAll(".timeline-stop").forEach((button) => {
+    button.addEventListener("click", () => {
+      setTimeout(initAll, 120);
+    });
+  });
+}
+
+/* =========================
+   MAPA DINÁMICO
+========================= */
+async function initMemoryMap() {
+  const mapSection = document.getElementById("mapa");
+  if (!mapSection) return;
+
+  const tabs = Array.from(document.querySelectorAll(".map-tab"));
+  const mapFrame = document.getElementById("memoryMap");
+  const mapImage = document.getElementById("mapImage");
+  const markerLayer = document.getElementById("markerLayer");
+  const introWrap = document.getElementById("mapIntro");
+  const introText = introWrap?.querySelector("p");
+  const typingText = document.getElementById("mapTypingText");
+  const transitionOverlay = document.getElementById("mapTransitionOverlay");
+
+  const card = document.getElementById("mapPointCard");
+  const cardTitle = document.getElementById("mapPointTitle");
+  const cardPlace = document.getElementById("mapPointPlace");
+  const cardText = document.getElementById("mapPointText");
+  const cardLink = document.getElementById("mapPointLink");
 
   if (
-    !tabsContainer ||
-    !markerLayer ||
-    !sectionIntro ||
+    !tabs.length ||
+    !mapFrame ||
     !mapImage ||
-    !mapCanvas ||
-    !floatingCard ||
-    !floatingCardClose ||
+    !markerLayer ||
+    !introText ||
+    !typingText ||
+    !transitionOverlay ||
+    !card ||
     !cardTitle ||
     !cardPlace ||
     !cardText ||
-    !cardLink ||
-    !typingText
+    !cardLink
   ) {
     return;
   }
 
-  let sectionsData = [];
-  let activeSectionIndex = 0;
-  let activePointIndex = null;
+  let mapData = [];
+  let activeMapId = "hitos-historicos";
+  let activeMarker = null;
+  let activePoint = null;
+  let typingTimer = null;
+  let hoverCloseTimer = null;
 
-  const typingPhrases = [
-    "Sumapaz a través de la memoria...",
-    "Sumapaz a través de los saberes...",
-    "Sumapaz a través de la resistencia...",
-    "Sumapaz a través del territorio..."
-  ];
+  const typingPhrases = {
+    "hitos-historicos": "Sumapaz a través de los hitos históricos",
+    "practicas-ancestrales": "Sumapaz a través de las prácticas ancestrales",
+    "defensa-del-territorio": "Sumapaz a través de la defensa del territorio",
+    "conflicto-armado": "Sumapaz a través del conflicto armado"
+  };
 
-  let phraseIndex = 0;
-  let charIndex = 0;
-  let isDeleting = false;
-  let typingTimeout = null;
+  const mapImageOverrides = {
+    "hitos-historicos": "assets/img/MAPA.png",
+    "practicas-ancestrales": "assets/img/MAPA.png",
+    "defensa-del-territorio": "assets/img/MAPA.png",
+    "conflicto-armado": "assets/img/MAPA.png"
+  };
 
-  function runTypingEffect() {
-    if (!typingPhrases.length) return;
+  try {
+    const response = await fetch("assets/data/points.json", { cache: "no-store" });
 
-    const currentPhrase = typingPhrases[phraseIndex];
+    if (!response.ok) {
+      throw new Error(`No se pudo cargar points.json (${response.status})`);
+    }
 
-    if (!isDeleting) {
-      typingText.textContent = currentPhrase.slice(0, charIndex + 1);
-      charIndex++;
+    mapData = await response.json();
+  } catch (error) {
+    console.error("Error cargando points.json:", error);
+    introText.textContent = "No fue posible cargar la información del mapa.";
+    return;
+  }
 
-      if (charIndex === currentPhrase.length) {
-        isDeleting = true;
-        typingTimeout = setTimeout(runTypingEffect, 1400);
-        return;
-      }
+  function getMapById(id) {
+    return mapData.find((item) => item.id === id);
+  }
 
-      typingTimeout = setTimeout(runTypingEffect, 65);
-    } else {
-      typingText.textContent = currentPhrase.slice(0, charIndex - 1);
-      charIndex--;
-
-      if (charIndex === 0) {
-        isDeleting = false;
-        phraseIndex = (phraseIndex + 1) % typingPhrases.length;
-        typingTimeout = setTimeout(runTypingEffect, 260);
-        return;
-      }
-
-      typingTimeout = setTimeout(runTypingEffect, 32);
+  function clearTypingTimer() {
+    if (typingTimer) {
+      clearTimeout(typingTimer);
+      typingTimer = null;
     }
   }
 
-  async function loadPoints() {
-    try {
-      const response = await fetch("api/points.json");
-      if (!response.ok) {
-        throw new Error("No se pudo cargar points.json");
+  function setTyping(text) {
+    clearTypingTimer();
+    typingText.textContent = "";
+
+    let index = 0;
+
+    const write = () => {
+      typingText.textContent = text.slice(0, index);
+      index += 1;
+
+      if (index <= text.length) {
+        typingTimer = setTimeout(write, 38);
       }
+    };
 
-      sectionsData = await response.json();
+    write();
+  }
 
-      if (!Array.isArray(sectionsData) || !sectionsData.length) {
-        throw new Error("El archivo points.json no contiene datos válidos.");
-      }
-
-      renderApp();
-      runTypingEffect();
-    } catch (error) {
-      console.error("Error cargando puntos del mapa:", error);
-      sectionIntro.textContent =
-        "No fue posible cargar la información del mapa. Ejecuta el proyecto con Live Server o revisa la ruta api/points.json.";
+  function clearHoverCloseTimer() {
+    if (hoverCloseTimer) {
+      clearTimeout(hoverCloseTimer);
+      hoverCloseTimer = null;
     }
   }
 
-  function renderApp() {
-    if (!sectionsData.length) return;
+  function closeCard() {
+    clearHoverCloseTimer();
 
-    renderTabs();
-    updateSectionIntro();
-    updateMapImage();
-    renderMarkers();
-    closeFloatingCard(false);
-  }
+    card.classList.add("hidden");
+    card.style.left = "";
+    card.style.top = "";
 
-  function renderTabs() {
-    tabsContainer.innerHTML = "";
-    tabsContainer.style.setProperty("--active-index", activeSectionIndex);
-
-    sectionsData.forEach((section, index) => {
-      const button = document.createElement("button");
-      button.className = `map-tab ${index === activeSectionIndex ? "active" : ""}`;
-      button.type = "button";
-      button.textContent = section.label || `Sección ${index + 1}`;
-
-      button.addEventListener("click", () => {
-        activeSectionIndex = index;
-        activePointIndex = null;
-        renderApp();
-      });
-
-      tabsContainer.appendChild(button);
-    });
-  }
-
-  function updateSectionIntro() {
-    const currentSection = sectionsData[activeSectionIndex];
-    sectionIntro.textContent = currentSection?.intro || "";
-  }
-
-  function updateMapImage() {
-    const currentSection = sectionsData[activeSectionIndex];
-
-    if (currentSection?.mapImage) {
-      mapImage.src = currentSection.mapImage;
-      mapImage.alt = currentSection.label || "Mapa interactivo";
+    if (activeMarker) {
+      activeMarker.classList.remove("active");
+      activeMarker = null;
     }
+
+    activePoint = null;
   }
 
-  function renderMarkers() {
-    markerLayer.innerHTML = "";
-    const currentSection = sectionsData[activeSectionIndex];
-
-    if (!currentSection?.points || !Array.isArray(currentSection.points)) return;
-
-    currentSection.points.forEach((point, index) => {
-      const marker = document.createElement("button");
-      marker.className = `map-marker ${index === activePointIndex ? "active" : ""}`;
-      marker.type = "button";
-      marker.style.left = `${point.x}%`;
-      marker.style.top = `${point.y}%`;
-      marker.setAttribute("aria-label", point.title || `Punto ${index + 1}`);
-      marker.title = point.title || `Punto ${index + 1}`;
-
-      marker.innerHTML = `
-        <span class="map-marker__dot"></span>
-        <span class="map-marker__ring"></span>
-        <span class="map-marker__ring delay-1"></span>
-        <span class="map-marker__ring delay-2"></span>
-      `;
-
-      marker.addEventListener("click", (event) => {
-        event.stopPropagation();
-        activePointIndex = index;
-        renderMarkers();
-        openFloatingCard(point);
-      });
-
-      markerLayer.appendChild(marker);
-    });
+  function scheduleCloseCard() {
+    clearHoverCloseTimer();
+    hoverCloseTimer = setTimeout(() => {
+      closeCard();
+    }, 90);
   }
 
-  function openFloatingCard(point) {
+  function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+  }
+
+  function placeCardNearMarker(marker) {
+    const frameRect = mapFrame.getBoundingClientRect();
+    const markerRect = marker.getBoundingClientRect();
+
+    const cardWidth = card.offsetWidth || 340;
+    const cardHeight = card.offsetHeight || 220;
+    const gap = 18;
+    const padding = 12;
+
+    let left = markerRect.left - frameRect.left + gap;
+    let top =
+      markerRect.top -
+      frameRect.top -
+      cardHeight / 2 +
+      markerRect.height / 2;
+
+    if (left + cardWidth > frameRect.width - padding) {
+      left = markerRect.left - frameRect.left - cardWidth - gap;
+    }
+
+    if (left < padding) {
+      left = padding;
+    }
+
+    top = clamp(top, padding, frameRect.height - cardHeight - padding);
+
+    card.style.left = `${left}px`;
+    card.style.top = `${top}px`;
+  }
+
+  function openCard(point, marker) {
+    clearHoverCloseTimer();
+    activePoint = point;
+
+    if (activeMarker && activeMarker !== marker) {
+      activeMarker.classList.remove("active");
+    }
+
+    activeMarker = marker;
+    activeMarker.classList.add("active");
+
     cardTitle.textContent = point.title || "";
     cardPlace.textContent = point.place || "";
     cardText.textContent = point.description || "";
 
-    if (point.link && point.link.trim() !== "") {
+    if (point.link) {
       cardLink.href = point.link;
-      cardLink.style.display = "inline-block";
+      cardLink.classList.remove("hidden");
     } else {
       cardLink.href = "#";
-      cardLink.style.display = "none";
+      cardLink.classList.add("hidden");
     }
 
-    const defaultPosition = {
-      left: 62,
-      top: 16
-    };
+    card.classList.remove("hidden");
+    placeCardNearMarker(marker);
+  }
 
-    const cardPosition = point.cardPosition || defaultPosition;
+  function createMarker(point, index) {
+    const marker = document.createElement("button");
+    marker.type = "button";
+    marker.className = "map-marker";
+    marker.style.left = `${point.x}%`;
+    marker.style.top = `${point.y}%`;
+    marker.setAttribute("aria-label", point.title || `Punto ${index + 1}`);
 
-    floatingCard.style.left = `${cardPosition.left}%`;
-    floatingCard.style.top = `${cardPosition.top}%`;
-    floatingCard.classList.remove("hidden");
+    marker.innerHTML = `
+      <span class="map-marker__ring"></span>
+      <span class="map-marker__ring delay-1"></span>
+      <span class="map-marker__ring delay-2"></span>
+      <span class="map-marker__dot"></span>
+    `;
 
-    requestAnimationFrame(() => {
-      adjustCardIfOverflow();
+    marker.addEventListener("mouseenter", () => {
+      openCard(point, marker);
+    });
+
+    marker.addEventListener("mouseleave", () => {
+      scheduleCloseCard();
+    });
+
+    marker.addEventListener("focus", () => {
+      openCard(point, marker);
+    });
+
+    marker.addEventListener("blur", () => {
+      scheduleCloseCard();
+    });
+
+    return marker;
+  }
+
+  function renderMarkers(points) {
+    markerLayer.innerHTML = "";
+
+    (points || []).forEach((point, index) => {
+      const marker = createMarker(point, index);
+      markerLayer.appendChild(marker);
     });
   }
 
-  function closeFloatingCard(resetMarker = true) {
-    floatingCard.classList.add("hidden");
+  function switchMapImage(newSrc, newAlt, points) {
+    mapFrame.classList.add("is-switching");
+    closeCard();
 
-    if (resetMarker) {
-      activePointIndex = null;
-      renderMarkers();
-    }
+    const preload = new Image();
+    preload.src = newSrc;
+
+    preload.onload = () => {
+      setTimeout(() => {
+        mapImage.src = newSrc;
+        mapImage.alt = newAlt || "Mapa de memoria";
+        renderMarkers(points);
+
+        requestAnimationFrame(() => {
+          mapFrame.classList.remove("is-switching");
+        });
+      }, 180);
+    };
+
+    preload.onerror = () => {
+      mapImage.src = newSrc;
+      mapImage.alt = newAlt || "Mapa de memoria";
+      renderMarkers(points);
+      mapFrame.classList.remove("is-switching");
+    };
   }
 
-  function adjustCardIfOverflow() {
-    if (floatingCard.classList.contains("hidden")) return;
+  function renderMap(id) {
+    const mapItem = getMapById(id);
+    if (!mapItem) return;
 
-    const canvasRect = mapCanvas.getBoundingClientRect();
-    const cardRect = floatingCard.getBoundingClientRect();
+    activeMapId = id;
 
-    let currentLeft = parseFloat(floatingCard.style.left) || 0;
-    let currentTop = parseFloat(floatingCard.style.top) || 0;
+    tabs.forEach((tab) => {
+      tab.classList.toggle("active", tab.dataset.map === id);
+    });
 
-    if (cardRect.right > canvasRect.right) {
-      currentLeft -= 18;
-    }
+    introText.textContent = mapItem.intro || "";
+    setTyping(typingPhrases[id] || "Sumapaz a través de la memoria");
 
-    if (cardRect.bottom > canvasRect.bottom) {
-      currentTop -= 18;
-    }
-
-    if (cardRect.left < canvasRect.left) {
-      currentLeft += 12;
-    }
-
-    if (cardRect.top < canvasRect.top) {
-      currentTop += 12;
-    }
-
-    floatingCard.style.left = `${currentLeft}%`;
-    floatingCard.style.top = `${currentTop}%`;
+    const resolvedImage = mapImageOverrides[id] || mapItem.mapImage || "";
+    switchMapImage(
+      resolvedImage,
+      mapItem.label || "Mapa de memoria",
+      mapItem.points || []
+    );
   }
 
-  floatingCardClose.addEventListener("click", (event) => {
-    event.stopPropagation();
-    closeFloatingCard();
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      const id = tab.dataset.map;
+      if (!id || id === activeMapId) return;
+      renderMap(id);
+    });
   });
 
-  mapCanvas.addEventListener("click", (event) => {
-    if (
-      !event.target.closest(".map-marker") &&
-      !event.target.closest(".map-point-card")
-    ) {
-      closeFloatingCard();
-    }
+  card.addEventListener("mouseenter", () => {
+    clearHoverCloseTimer();
+  });
+
+  card.addEventListener("mouseleave", () => {
+    scheduleCloseCard();
   });
 
   window.addEventListener("resize", () => {
-    if (!floatingCard.classList.contains("hidden")) {
-      adjustCardIfOverflow();
+    if (activeMarker && activePoint && !card.classList.contains("hidden")) {
+      placeCardNearMarker(activeMarker);
     }
   });
 
-  loadPoints();
+  renderMap(activeMapId);
 }

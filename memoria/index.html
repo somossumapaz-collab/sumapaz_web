@@ -30,8 +30,9 @@
     <div class="page-surface"></div>
 
     <!-- INTRO -->
-    <section class="intro-overlay">
+    <section class="intro-overlay" aria-labelledby="intro-title">
       <div class="container">
+        <h2 id="intro-title" class="sr-only">Introducción</h2>
         <p class="intro-text">
           Queremos visibilizar y dignificar las memorias del campesinado y las
           víctimas del conflicto armado en el territorio de Sumapaz, a través de
@@ -43,8 +44,9 @@
     </section>
 
     <!-- VIDEO -->
-    <section class="video-section" id="video">
+    <section class="video-section" id="video" aria-labelledby="video-title">
       <div class="container">
+        <h2 id="video-title" class="sr-only">Video de memoria</h2>
         <div class="video-wrap">
           <video controls preload="metadata">
             <source src="assets/img/1video_editado.mp4" type="video/mp4" />
@@ -55,11 +57,11 @@
     </section>
 
     <!-- PROCESO / TIMELINE -->
-    <section class="process-section" id="proceso">
+    <section class="process-section" id="proceso" aria-labelledby="process-title">
       <div class="container process-container">
 
         <div class="process-grid">
-          <h2 class="process-title">
+          <h2 class="process-title" id="process-title">
             <span class="process-title-main">Sumapaz</span>
             <span class="process-title-sub">geografías de memoria y resistencia</span>
           </h2>
@@ -75,7 +77,7 @@
         </div>
 
         <!-- TIMELINE SUPERIOR -->
-        <div class="timeline-header">
+        <div class="timeline-header" aria-label="Línea de tiempo del proceso">
           <div class="timeline-line"></div>
           <div class="timeline-progress"></div>
           <div class="timeline-progress-dot"></div>
@@ -121,7 +123,7 @@
             </div>
 
             <div class="timeline-stage-media media-single">
-              <img src="assets/img/CMPR_V1.webp" alt="CMPR" />
+              <img src="assets/img/CMPR_V1.webp" alt="Encuentro CMPR" />
             </div>
           </div>
         </article>
@@ -142,21 +144,17 @@
               </p>
             </div>
 
-            <div class="timeline-stage-media media-carousel" data-carousel>
-              <button class="carousel-arrow prev" type="button" data-carousel-prev aria-label="Anterior">‹</button>
-
+            <div class="timeline-stage-media media-carousel media-carousel-marquee" data-carousel-marquee>
               <div class="carousel-viewport">
-                <div class="carousel-track">
-                  <div class="carousel-slide active">
-                    <img src="assets/img/CHORRERAS_1.webp" alt="Chorreras 1" />
+                <div class="carousel-track marquee-track">
+                  <div class="carousel-slide">
+                    <img src="assets/img/CHORRERAS_1.webp" alt="Encuentro en Chorreras 1" />
                   </div>
                   <div class="carousel-slide">
-                    <img src="assets/img/CHORRERAS_2_2.webp" alt="Chorreras 2" />
+                    <img src="assets/img/CHORRERAS_2_2.webp" alt="Encuentro en Chorreras 2" />
                   </div>
                 </div>
               </div>
-
-              <button class="carousel-arrow next" type="button" data-carousel-next aria-label="Siguiente">›</button>
             </div>
           </div>
         </article>
@@ -175,21 +173,17 @@
               </p>
             </div>
 
-            <div class="timeline-stage-media media-carousel" data-carousel>
-              <button class="carousel-arrow prev" type="button" data-carousel-prev aria-label="Anterior">‹</button>
-
+            <div class="timeline-stage-media media-carousel media-carousel-marquee" data-carousel-marquee>
               <div class="carousel-viewport">
-                <div class="carousel-track">
-                  <div class="carousel-slide active">
-                    <img src="assets/img/BETANIA_1.webp" alt="Betania 1" />
+                <div class="carousel-track marquee-track">
+                  <div class="carousel-slide">
+                    <img src="assets/img/BETANIA_1.webp" alt="Encuentro en Betania 1" />
                   </div>
                   <div class="carousel-slide">
-                    <img src="assets/img/BETANIA_2.webp" alt="Betania 2" />
+                    <img src="assets/img/BETANIA_2.webp" alt="Encuentro en Betania 2" />
                   </div>
                 </div>
               </div>
-
-              <button class="carousel-arrow next" type="button" data-carousel-next aria-label="Siguiente">›</button>
             </div>
           </div>
         </article>
@@ -207,21 +201,17 @@
               </p>
             </div>
 
-            <div class="timeline-stage-media media-carousel" data-carousel>
-              <button class="carousel-arrow prev" type="button" data-carousel-prev aria-label="Anterior">‹</button>
-
+            <div class="timeline-stage-media media-carousel media-carousel-marquee" data-carousel-marquee>
               <div class="carousel-viewport">
-                <div class="carousel-track">
-                  <div class="carousel-slide active">
-                    <img src="assets/img/CONCEPCION_1.webp" alt="Concepción 1" />
+                <div class="carousel-track marquee-track">
+                  <div class="carousel-slide">
+                    <img src="assets/img/CONCEPCION_1.webp" alt="Encuentro en Concepción 1" />
                   </div>
                   <div class="carousel-slide">
-                    <img src="assets/img/CONCEPCION_2.webp" alt="Concepción 2" />
+                    <img src="assets/img/CONCEPCION_2.webp" alt="Encuentro en Concepción 2" />
                   </div>
                 </div>
               </div>
-
-              <button class="carousel-arrow next" type="button" data-carousel-next aria-label="Siguiente">›</button>
             </div>
           </div>
         </article>
@@ -240,7 +230,7 @@
             </div>
 
             <div class="timeline-stage-media media-single">
-              <img src="assets/img/LAS-SOPAS.webp" alt="Las Sopas" />
+              <img src="assets/img/LAS-SOPAS.webp" alt="Encuentro en Las Sopas" />
             </div>
           </div>
         </article>
@@ -257,79 +247,100 @@
             </div>
 
             <div class="timeline-stage-media media-single">
-              <img src="assets/img/imagen-de-prueba-cuadrada-1200-1200.webp" alt="Eventos especiales" />
+              <img src="assets/img/imagen-de-prueba-cuadrada-1200-1200.webp" alt="Eventos especiales en Sumapaz" />
             </div>
           </div>
         </article>
-
       </div>
-    </section>
-
-    <!-- FRANJA DECORATIVA -->
-    <section class="section-divider-image">
-      <img src="assets/img/montanas-sumapaz-copia.webp" alt="Montañas de Sumapaz" />
+      <!-- FRANJA DECORATIVA -->
+      <div class="section-divider-image" aria-hidden="true">
+        <img src="assets/img/montanas-sumapaz-copia.webp" alt="Montañas de Sumapaz" />
+      </div>
     </section>
 
     <!-- MAPA -->
-<section class="map-section" id="mapa">
-  <div class="container map-layout">
+    <section class="map-section" id="mapa" aria-labelledby="map-heading-title">
+      <div class="container">
 
-    <aside class="map-sidebar">
-      <div class="map-tabs map-tabs-vertical" id="memoryTabs"></div>
-    </aside>
+        <header class="map-header-block">
+          <div class="map-heading">
+            <h2 class="map-heading-title" id="map-heading-title">¿QUÉ CUENTA EL</h2>
+            <h3 class="map-heading-sub">TERRITORIO?</h3>
+          </div>
 
-    <div class="map-main">
-      <div class="map-heading">
-        <h2 class="map-heading-title">
-          ¿QUÉ CUENTA EL
-          <span class="map-heading-highlight">TERRITORIO?</span>
-        </h2>
-      </div>
+          <div class="map-typing-wrap">
+            <p class="map-typing-text" id="mapTypingText">Sumapaz a través de la memoria...</p>
+          </div>
+        </header>
 
-      <div class="map-typing-wrap">
-        <p class="map-typing-text" id="typingText"></p>
-      </div>
+        <div class="map-layout">
 
-      <div class="map-content-row">
-        <div class="map-frame" id="mapCanvas">
-          <img
-            src="assets/img/mapa-supamaz_V1_5-copia.webp"
-            class="map-image"
-            id="mapImage"
-            alt="Mapa interactivo de Sumapaz"
-          />
+          <!-- BOTONES LATERALES -->
+          <aside class="map-sidebar" aria-label="Categorías del mapa">
+            <div class="map-tabs map-tabs-vertical" id="mapTabs">
+              <button class="map-tab active" data-map="hitos-historicos" type="button">
+                Hitos históricos
+              </button>
+              <button class="map-tab" data-map="practicas-ancestrales" type="button">
+                Prácticas ancestrales
+              </button>
+              <button class="map-tab" data-map="defensa-del-territorio" type="button">
+                Defensa del territorio
+              </button>
+              <button class="map-tab" data-map="conflicto-armado" type="button">
+                Conflicto armado
+              </button>
+            </div>
+          </aside>
 
-          <div class="marker-layer" id="markerLayer"></div>
+          <!-- ESCENA PRINCIPAL DEL MAPA -->
+          <div class="map-main">
+            <div class="map-stage">
 
-          <article class="map-point-card hidden" id="floatingCard">
-            <button
-              class="map-point-card-close"
-              id="floatingCardClose"
-              type="button"
-              aria-label="Cerrar"
-            >
-              ×
-            </button>
+              <!-- TEXTO INTRODUCTORIO DINÁMICO -->
+              <div class="map-intro-block" id="mapIntro">
+                <p>
+                  Estos hitos históricos, situados en el territorio, ubican los hechos,
+                  memorias y transformaciones del Sumapaz a lo largo del tiempo,
+                  identificando sucesos relevantes para la comunidad, desde los orígenes
+                  ancestrales y la colonización, hasta las luchas campesinas y los
+                  procesos de resistencia en el territorio.
+                </p>
+              </div>
 
-            <h4 class="map-point-card-title" id="cardTitle"></h4>
-            <p class="map-point-card-place" id="cardPlace"></p>
-            <p class="map-point-card-text" id="cardText"></p>
-            <a
-              class="map-point-card-link"
-              id="cardLink"
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Leer más
-            </a>
-          </article>
+              <!-- MAPA DINÁMICO -->
+              <div class="map-frame" id="memoryMap">
+                <img
+                  src="assets/img/MAPA.png"
+                  class="map-image"
+                  id="mapImage"
+                  alt="Mapa de memoria de Sumapaz"
+                />
+
+                <div class="map-transition-overlay" id="mapTransitionOverlay" aria-hidden="true"></div>
+                <div class="marker-layer" id="markerLayer"></div>
+
+                <article class="map-point-card hidden" id="mapPointCard" aria-live="polite">
+                  <h4 class="map-point-card-title" id="mapPointTitle"></h4>
+                  <p class="map-point-card-place" id="mapPointPlace"></p>
+                  <p class="map-point-card-text" id="mapPointText"></p>
+                  <a
+                    class="map-point-card-link hidden"
+                    id="mapPointLink"
+                    href="#"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Leer más
+                  </a>
+                </article>
+              </div>
+
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-
-  </div>
-</section>
+    </section>
 
     <!-- FOOTER VISUAL -->
     <section class="footer-visual">
