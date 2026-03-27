@@ -3,6 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const menuToggle = document.getElementById("menuToggle");
   const sideMenu = document.getElementById("sideMenu");
 
+  document.body.classList.remove("fade-out");
+
   panels.forEach((panel) => {
     panel.addEventListener("mouseenter", () => {
       panels.forEach((p) => p.classList.remove("active"));
@@ -18,11 +20,10 @@ document.addEventListener("DOMContentLoaded", () => {
     panel.addEventListener("click", function (e) {
       const href = this.getAttribute("href");
 
-      if (!href || href.startsWith("http")) {
-        return;
-      }
+      if (!href || href.startsWith("http")) return;
 
       e.preventDefault();
+
       document.body.classList.add("fade-out");
 
       setTimeout(() => {
@@ -31,18 +32,24 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  menuToggle?.addEventListener("click", (event) => {
-    event.stopPropagation();
-    menuToggle.classList.toggle("active");
-    sideMenu?.classList.toggle("open");
-  });
+  if (menuToggle && sideMenu) {
+    menuToggle.addEventListener("click", (event) => {
+      event.stopPropagation();
+      menuToggle.classList.toggle("active");
+      sideMenu.classList.toggle("open");
+    });
 
-  sideMenu?.addEventListener("click", (event) => {
-    event.stopPropagation();
-  });
+    sideMenu.addEventListener("click", (event) => {
+      event.stopPropagation();
+    });
 
-  document.addEventListener("click", () => {
-    sideMenu?.classList.remove("open");
-    menuToggle?.classList.remove("active");
-  });
+    document.addEventListener("click", () => {
+      sideMenu.classList.remove("open");
+      menuToggle.classList.remove("active");
+    });
+  }
+});
+
+window.addEventListener("pageshow", () => {
+  document.body.classList.remove("fade-out");
 });
