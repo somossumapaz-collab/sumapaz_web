@@ -14,6 +14,23 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  panels.forEach((panel) => {
+    panel.addEventListener("click", function (e) {
+      const href = this.getAttribute("href");
+
+      if (!href || href.startsWith("http")) {
+        return;
+      }
+
+      e.preventDefault();
+      document.body.classList.add("fade-out");
+
+      setTimeout(() => {
+        window.location.href = href;
+      }, 250);
+    });
+  });
+
   menuToggle?.addEventListener("click", (event) => {
     event.stopPropagation();
     menuToggle.classList.toggle("active");

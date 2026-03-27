@@ -2,7 +2,6 @@
   --topbar-bg: #f9edd8;
   --green-dark: #3c5228;
   --green-overlay: rgba(60, 82, 40, 0.58);
-  --green-overlay-strong: rgba(60, 82, 40, 0.68);
   --menu-bg: #5a7839;
   --menu-pill-bg: rgba(249, 237, 216, 0.72);
   --menu-pill-text: #d28f2d;
@@ -25,6 +24,11 @@ body {
 
 body {
   overflow-x: hidden;
+  transition: opacity 0.3s ease;
+}
+
+body.fade-out {
+  opacity: 0;
 }
 
 /* =========================
@@ -166,17 +170,25 @@ body {
 }
 
 .panel {
+  display: block;
   position: relative;
   flex: 1;
   min-height: calc(100vh - 70px);
   overflow: hidden;
   isolation: isolate;
-  transition: flex 0.4s ease;
+  transition: flex 0.4s ease, transform 0.2s ease;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
 }
 
 .panel:hover,
 .panel.active {
   flex: 1.02;
+}
+
+.panel:active {
+  transform: scale(0.995);
 }
 
 .panel-bg {
@@ -241,6 +253,7 @@ body {
     top 0.4s ease,
     transform 0.4s ease,
     width 0.4s ease;
+  pointer-events: none;
 }
 
 .panel-left .panel-logo-link {
@@ -311,8 +324,8 @@ body {
 .panel-left:hover .panel-logo-link {
   top: auto;
   left: 50%;
-  bottom: 140px;
-  width: min(400px, 42vw);
+  bottom: 200px;
+  width: min(445px, 75vw);
   transform: translateX(-50%);
 }
 
@@ -321,8 +334,8 @@ body {
 .panel-right:hover .panel-logo-link {
   top: auto;
   left: 50%;
-  bottom: 400px;
-  width: min(400px, 42vw);
+  bottom: 500px;
+  width: min(445px, 75vw);
   transform: translateX(-50%);
 }
 
