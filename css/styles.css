@@ -321,7 +321,7 @@ body {
 .panel-right:hover .panel-logo-link {
   top: auto;
   left: 50%;
-  bottom: 140px;
+  bottom: 400px;
   width: min(400px, 42vw);
   transform: translateX(-50%);
 }
